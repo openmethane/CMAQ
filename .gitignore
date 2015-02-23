@@ -1,3 +1,11 @@
 *.o
 *.a
 *~
+*.exe
+*.mod
+*.MOD
+lib/
+BLD_D502a
+BLD
+models/BLDMAKE/bldmake
+

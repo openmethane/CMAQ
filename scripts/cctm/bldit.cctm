@@ -178,10 +178,12 @@ set Mechanism = cb05tucl_ae6_aq
  set Blder = $M3LIB/bldmake
 
 #> Set location of libraries/include files
- set LIOAPI  = "${M3LIB}/ioapi_3.1/Linux2_${system}${compiler_ext} -lioapi"
- set IOAPIMOD = ${M3LIB}/ioapi_3.1/Linux2_${system}${compiler_ext}
+ set LIOAPI  = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext} -lioapi"
+ set IOAPIMOD = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext}"
+echo LIOAPI $LIOAPI
+echo IOAPIMOD $IOAPIMOD
 
- set NETCDF = "${M3LIB}/netcdf/lib -lnetcdf"
+ set NETCDF = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext} -lnotcdf"
 
  if ( $?ParOpt ) then      # Multiprocessor system configuration
     set PARIO = ${M3LIB}/pario
@@ -197,7 +199,7 @@ set Mechanism = cb05tucl_ae6_aq
  set F90_FLAGS  = "${myFRFLAGS} -I ${IOAPIMOD} -I ${PARIO} -I ${STENEX} -I ${MPI_INC} -I."
  set CPP_FLAGS  = ""
  set C_FLAGS    = "${myCFLAGS} -DFLDMN -I ${MPI_INC}"
- set LINK_FLAGS = "${myLINK_FLAG}"
+ set LINK_FLAGS = "${myLINK_FLAG} -lpthread -openmp"
 
 #:#:#:#:#:#:#:#:#:#:#:# End of User Input Section :#:#:#:#:#:#:#:#:#:#:#:#:#
 
@@ -205,7 +207,7 @@ set Mechanism = cb05tucl_ae6_aq
     set seL = se_snl
     set LIB2 = "-L${M3LIB}/pario -lpario"
     set LIB3 = 
-    set LIB4 = "-L${M3LIB}/mpich/lib ${mpi} ${extra_lib}"
+    set LIB4 = "-L${M3HOME}/lib/mpich/lib ${mpi} ${extra_lib}"
     set Str1 = (// Parallel / Include message passing definitions)
     set Str2 = (include SUBST_MPI ${MPI_INC}/mpif.h;)
  else
@@ -220,7 +222,9 @@ set Mechanism = cb05tucl_ae6_aq
  set LIB1 = "-L${STENEX} -l${seL}"
  set LIB5 = "-L${LIOAPI}"
  set LIB6 = "-L${NETCDF}"
- set LIBS = "$LIB1 $LIB2 $LIB3 $LIB4 $LIB5 $LIB6"
+ set LIB7 = "-L/home/563/jds563/programs/pvm3/lib/LINUX64 -lpvm3 -lfpvm3"
+
+ set LIBS = "$LIB1 $LIB2 $LIB3 $LIB4 $LIB5 $LIB6 $LIB7"
  
  source $Base/relinc.cctm
 

@@ -103,17 +103,18 @@
  set Blder = $M3LIB/bldmake
 
 #> Set location of libraries/include files
- set LIOAPI  = "${M3LIB}/ioapi_3.1/Linux2_${system}${compiler_ext} -lioapi"
- set IOAPIMOD = ${M3LIB}/ioapi_3.1/Linux2_${system}${compiler_ext}
+ set LIOAPI  = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext} -lioapi"
+ set IOAPIMOD = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext}"
 
- set NETCDF = "${M3LIB}/netcdf/lib -lnetcdf"
+# set NETCDF = "${M3HOME}/lib/netcdf/lib -lnetcdf -L${M3HOME}/lib/netcdf/lib/Intel -lnetcdff -L${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext} -lnotcdf"
+ set NETCDF = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext} -lnotcdf"
 
 #> Set compiler flags
  set F_FLAGS    = "${myFFLAGS} -I${IOAPIMOD} -I."
  set F90_FLAGS  = "${myFRFLAGS} -I${IOAPIMOD} -I."
  set CPP_FLAGS  = ""
  set C_FLAGS    = "${myCFLAGS} -DFLDMN"
- set LINK_FLAGS = "${myLINK_FLAG}"
+ set LINK_FLAGS = "${myLINK_FLAG} -lpthread -openmp"
 
 #:#:#:#:#:#:#:#:#:#:#:# End of User Input Section :#:#:#:#:#:#:#:#:#:#:#:#:#
 

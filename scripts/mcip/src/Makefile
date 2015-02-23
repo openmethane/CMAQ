@@ -20,9 +20,10 @@
 .SUFFIXES: .o .f90 .F90
 
 MODEL = mcip.exe
-NETCDF = /usr/local/netcdf
-IOAPI_ROOT = /usr/local/ioapi
-PVM = /usr/local/pvm3
+NETCDF = /home/563/jds563/.local
+M3LIB=/home/563/jds563/programs/CMAQ
+IOAPI_ROOT = $(M3LIB)/ioapi-3.1
+PVM = /home/563/jds563/programs/pvm3
 
 #...Portland Group Fortran
 #FC     = pgf90
@@ -44,14 +45,18 @@ PVM = /usr/local/pvm3
 #         -L$(PVM)/lib -lpvm3
 
 #...Intel Fortran
-#FC      = ifort
-#FFLAGS  = -g -O0 -check all -C -traceback -FR -I$(NETCDF)/include  \
-#          -I$(IOAPI_ROOT)/Linux2_x86_64
-#FFLAGS  = -FR -O3 -traceback -I$(NETCDF)/include -I$(IOAPI_ROOT)/Linux2_x86_64
-#LIBS    = -L$(IOAPI_ROOT)/Linux2_x86_64 -lioapi \
+FC      = ifort
+FFLAGS  = -g -O0 -check all -C -traceback -FR -I$(NETCDF)/include  \
+         -I$(IOAPI_ROOT)/Linux2_x86_64ifort
+FFLAGS  = -FR -O3 -traceback -I$(NETCDF)/include -I$(IOAPI_ROOT)/Linux2_x86_64ifort -openmp
+# LIBS    = -L$(IOAPI_ROOT)/Linux2_x86_64ifort -lioapi \
 #          -L$(NETCDF)/lib -lnetcdf -lnetcdff \
-#	   -L$(PVM)/lib -lpvm3 \
-#	   -limf
+# 	   -L$(PVM)/lib/LINUX64 -lpvm3 \
+# 	   -limf
+LIBS    = -L$(IOAPI_ROOT)/Linux2_x86_64ifort -lioapi -lnotcdf \
+           -L$(NETCDF)/lib -lnetcdf -lnetcdff \
+	   -L$(PVM)/lib/LINUX64 -lpvm3 \
+	   -limf
 
 DEFS   = 
 

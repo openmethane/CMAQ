@@ -1,4 +1,4 @@
-#! /bin/csh -f
+#!/bin/csh -f
 
 # ================= CMAQ5.0.2 Configuration Script ================== #
 # Requirements: I/O API & netCDF libs, PGI, Intel, Gnu Compiler       #
@@ -13,7 +13,7 @@
 #> sourced from bldit.<model>
 
 #> model repository location
- setenv M3HOME /nas01/apps/CMAQv5.0.2
+ setenv M3HOME /home/563/jds563/programs/CMAQ/CMAQv5.0.2
  setenv M3MODEL ${M3HOME}/models
  setenv M3DATA  ${M3HOME}/data
 
@@ -94,7 +94,8 @@ setenv extra_lib
 #> generate library locations
        setenv M3LIB ${lib_basedir}/${system}/${compiler}
        if ( ! -d $M3LIB ) mkdir -p $M3LIB
-       setenv MPI_INC $M3LIB/mpich/include
+       ## setenv MPI_INC $M3LIB/mpich/include
+       setenv MPI_INC ${HOME}/.local/include
 
 #> set executable id
  setenv EXEC_ID ${bld_os}_${system}${compiler}
