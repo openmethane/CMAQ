@@ -116,10 +116,10 @@ set APPL       = Benchmark
 set CoordName  = lcc-EPAStd        # 16-character maximum
 set GridName   = CMAQ-BENCHMARK    # 16-character maximum
 
-set HomePath   = set the directory path here/MCIPv4.2
-set DataPath   = $HomePath/data
-set InMetDir   = $DataPath/input
-set InTerDir   = $DataPath/terrain
+set HomePath   = /home/563/jds563/programs/CMAQ/CMAQv5.0.2/scripts/mcip
+## set DataPath   = $HomePath/data
+set InMetDir   = /short/w22/jds563/data/WRF/testrun
+set InTerDir   = /short/w22/jds563/data/WRF/testrun
 set InSatDir   = $DataPath/goes
 set OutDir     = $DataPath/output 
 set ProgDir    = $HomePath/src

@@ -8,4 +8,5 @@ lib/
 BLD_D502a
 BLD
 models/BLDMAKE/bldmake
+*.log
 

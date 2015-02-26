@@ -15,7 +15,7 @@
 #> model repository location
  setenv M3HOME /home/563/jds563/programs/CMAQ/CMAQv5.0.2
  setenv M3MODEL ${M3HOME}/models
- setenv M3DATA  ${M3HOME}/data
+ setenv M3DATA  /short/w22/jds563/data/CMAQ-benchmark/CMAQv5.0.2/data
 
 #===============================================================================
 
@@ -46,7 +46,7 @@ setenv extra_lib
 ##> Intel fortran compiler......................................................
        setenv compiler intel
        setenv compiler_ext ifort
-       setenv myFC mpif90
+       setenv myFC /home/563/jds563/.local/bin/mpif90
        setenv myCC mpicc
        setenv myLINK_FLAG "-i-static"
        setenv myFFLAGS "-fixed -132 -O3 -override-limits -fno-alias -mp1 -fp-model precise"

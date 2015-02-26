@@ -53,7 +53,7 @@ FFLAGS  = -FR -O3 -traceback -I$(NETCDF)/include -I$(IOAPI_ROOT)/Linux2_x86_64if
 #          -L$(NETCDF)/lib -lnetcdf -lnetcdff \
 # 	   -L$(PVM)/lib/LINUX64 -lpvm3 \
 # 	   -limf
-LIBS    = -L$(IOAPI_ROOT)/Linux2_x86_64ifort -lioapi -lnotcdf \
+LIBS    = -L$(IOAPI_ROOT)/Linux2_x86_64ifort -lioapi -lnetcdf \
            -L$(NETCDF)/lib -lnetcdf -lnetcdff \
 	   -L$(PVM)/lib/LINUX64 -lpvm3 \
 	   -limf

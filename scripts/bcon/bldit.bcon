@@ -117,7 +117,8 @@
  set IOAPIMOD = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext}"
 
 # set NETCDF = "${M3LIB}/netcdf/lib -lnetcdf"
- set NETCDF = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext} -lnotcdf"
+# set NETCDF = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext} -lnetcdf"
+ set NETCDF = "/home/563/jds563/.local/lib -lnetcdf  -lnetcdff"
 
 #> Set compiler flags
  set F_FLAGS    = "${myFFLAGS} -I ${IOAPIMOD} -I."

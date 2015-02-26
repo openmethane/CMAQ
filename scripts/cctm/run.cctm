@@ -315,9 +315,9 @@ endif
  /usr/bin/time  $BLD/$EXEC
 
 #> Executable call for multi PE, configure for your system 
-# set MPI = /usr/local/intel/impi/3.2.2.006/bin64
-# set MPIRUN = $MPI/mpirun
-# time $MPIRUN -r ssh -np $NPROCS $BLD/$EXEC
+set MPI = $HOME/.local/bin
+set MPIRUN = $MPI/mpirun
+time $MPIRUN -np $NPROCS $BLD/$EXEC
 
  date
  exit
