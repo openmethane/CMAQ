@@ -77,7 +77,7 @@
                     # comment out to also compile the model (default if not set)
 
 #> user choices:  single or multiple processors
- set ParOpt         # set for multiple PE's; comment out for single PE
+# set ParOpt         # set for multiple PE's; comment out for single PE
 
 #> user choices: various modules
 

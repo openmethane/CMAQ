@@ -6,6 +6,7 @@
 *.MOD
 lib/
 BLD_D502a
+BLD_noop
 BLD
 models/BLDMAKE/bldmake
 *.log

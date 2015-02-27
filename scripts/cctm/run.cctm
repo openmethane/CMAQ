@@ -19,6 +19,7 @@
     endif
  echo " "; echo " Input data path, M3DATA set to $M3DATA"; echo " "
  
+ set PROC     = mpi #> serial or mpi
  set PROC     = serial #> serial or mpi
  set APPL     = D502a
  set CFG      = CMAQ-BENCHMARK
@@ -312,12 +313,14 @@ endif
  limit
 
 #> Executable call for single PE, uncomment to invoke
- /usr/bin/time  $BLD/$EXEC
-
+if ( $PROC == serial ) then
+    /usr/bin/time  $BLD/$EXEC
+else
 #> Executable call for multi PE, configure for your system 
-set MPI = $HOME/.local/bin
-set MPIRUN = $MPI/mpirun
-time $MPIRUN -np $NPROCS $BLD/$EXEC
+    set MPI = $HOME/.local/bin
+    set MPIRUN = $MPI/mpirun
+    time $MPIRUN -np $NPROCS $BLD/$EXEC
+endif
 
  date
  exit
