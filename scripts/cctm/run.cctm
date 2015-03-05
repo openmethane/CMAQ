@@ -20,10 +20,11 @@
  echo " "; echo " Input data path, M3DATA set to $M3DATA"; echo " "
  
  set PROC     = mpi #> serial or mpi
- set PROC     = serial #> serial or mpi
+# set PROC     = serial #> serial or mpi
  set APPL     = D502a
  set CFG      = CMAQ-BENCHMARK
  set MECH     = cb05tucl_ae6_aq 
+# set MECH     = trac1
  set EXEC     = CCTM_${APPL}_$EXEC_ID
 
 #> horizontal domain decomposition

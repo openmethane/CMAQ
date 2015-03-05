@@ -47,9 +47,9 @@ setenv extra_lib
        setenv compiler intel
        setenv compiler_ext ifort
        setenv myFC /home/563/jds563/.local/bin/mpif90
-       setenv myCC mpicc
-       setenv myFC ifort
-       setenv myCC icc
+       setenv myCC /home/563/jds563/.local/bin/mpicc
+       #setenv myFC ifort
+       #setenv myCC icc
        setenv myLINK_FLAG "-i-static"
        setenv myFFLAGS "-fixed -132 -O3 -override-limits -fno-alias -mp1 -fp-model precise"
        setenv myFRFLAGS "-free -O3 -fno-alias -mp1 -fp-model precise"
