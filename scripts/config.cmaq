@@ -13,7 +13,7 @@
 #> sourced from bldit.<model>
 
 #> model repository location
- setenv M3HOME /home/563/jds563/programs/CMAQ/CMAQv5.0.2
+ setenv M3HOME /home/563/jds563/programs/CMAQ/CMAQv5.0.2_notpollen
  setenv M3MODEL ${M3HOME}/models
  setenv M3DATA  /short/w22/jds563/data/CMAQ-benchmark/CMAQv5.0.2/data
 
