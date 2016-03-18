@@ -10,4 +10,5 @@ BLD_noop
 BLD
 models/BLDMAKE/bldmake
 *.log
+CTM_LOG_*[0-9]
 
