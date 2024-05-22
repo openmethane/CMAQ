@@ -128,10 +128,14 @@ C of Binkowski & Roselle (2003)
       integer    :: n, idx
 
       integer, parameter :: ndltyp = 3   ! number of desert land type beld1
+C      character( 16 ) :: vnmld( ndltyp ) = (/
+C     &                   'USGS_shrubland ',
+C     &                   'USGS_shrubgrass',
+C     &                   'USGS_sprsbarren' /)
       character( 16 ) :: vnmld( ndltyp ) = (/
-     &                   'USGS_shrubland ',
-     &                   'USGS_shrubgrass',
-     &                   'USGS_sprsbarren' /)
+     &                   'LUFRAC_08      ',
+     &                   'LUFRAC_09      ',
+     &                   'LUFRAC_19      ' /)
 
 C Number of soil types: For both WRF and MM5-PX met models, there are 16 types;
 C the first 12 soil types are used and the rest lumped into Other.
@@ -433,24 +437,24 @@ C Allocate diagnostic emissions arrays
 
          end if
 
-         call subhfile ( dust_lu_1, gxoff, gyoff,
-     &                   strtcol_01, endcol_01, strtrow_01, endrow_01 )
-
-C Get desert land (fraction) data
-         do i = 1, ndltyp
-            if ( .not. xtract3( dust_lu_1, vnmld( i ),
-     &                          1,1, strtrow_01,endrow_01, strtcol_01,endcol_01,
-     &                          0, 0, ladut( 1,1,i ) ) ) then
-               xmsg = 'Could not read ' // trim( vnmld( i ) ) // ' from DUST_LU_1'
-               call m3exit( pname, jdate, jtime, xmsg, xstat1 )
-            end if
-         end do
+C         call subhfile ( dust_lu_1, gxoff, gyoff,
+C     &                   strtcol_01, endcol_01, strtrow_01, endrow_01 )
 
          call subhfile ( met_cro_2d, gxoff, gyoff,
      &                   strtcolmc2, endcolmc2, strtrowmc2, endrowmc2 )
 
          call subhfile ( grid_cro_2d, gxoff, gyoff,
      &                   strtcolgc2, endcolgc2, strtrowgc2, endrowgc2 )
+
+C Get desert land (fraction) data
+         do i = 1, ndltyp
+            if ( .not. interpx( grid_cro_2d, vnmld( i ), pname,
+     &                          strtcolgc2, endcolgc2, strtrowgc2, endrowgc2, 1, 1,
+     &                          jdate, jtime, ladut( 1,1,i ) ) ) then
+               xmsg = 'Could not read ' // trim( vnmld( i ) ) // ' from GRID_CRO_2D'
+               call m3exit( pname, jdate, jtime, xmsg, xstat1 )
+            end if
+         end do
 
 C Get soil type data
 !        if ( metmod .eq. 'mm5' ) then
