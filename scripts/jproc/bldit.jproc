@@ -50,7 +50,8 @@
 
 #> user choices: base working directory
  set Base = $cwd
- set APPL  = D502a
+ #set APPL  = D502a
+ set APPL  = CH4only
  set CFG   = cfg.$APPL
  set MODEL = JPROC_${APPL}_$EXEC_ID
 
@@ -81,7 +82,8 @@
 #> user choices: mechanism
 #set Mechanism = cb05cl_ae5_aq
 #set Mechanism = cb05tucl_ae5_aq
- set Mechanism = cb05tucl_ae6_aq
+# set Mechanism = cb05tucl_ae6_aq
+ set Mechanism = CH4only
 #set Mechanism = cb05tump_ae6_aq
 #set Mechanism = saprc99_ae5_aq
 #set Mechanism = saprc99_ae6_aq
@@ -107,14 +109,14 @@
  set IOAPIMOD = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext}"
 
 # set NETCDF = "${M3HOME}/lib/netcdf/lib -lnetcdf -L${M3HOME}/lib/netcdf/lib/Intel -lnetcdff -L${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext} -lnetcdf"
- set NETCDF = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext} -lnetcdf"
+ set NETCDF = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext} -L/apps/netcdf/4.7.1/lib -lnetcdf -L/apps/netcdf/4.7.1/lib/Intel -lnetcdff"
 
 #> Set compiler flags
  set F_FLAGS    = "${myFFLAGS} -I${IOAPIMOD} -I."
  set F90_FLAGS  = "${myFRFLAGS} -I${IOAPIMOD} -I."
  set CPP_FLAGS  = ""
  set C_FLAGS    = "${myCFLAGS} -DFLDMN"
- set LINK_FLAGS = "${myLINK_FLAG} -lpthread -openmp"
+ set LINK_FLAGS = "${myLINK_FLAG} -lpthread -qopenmp"
 
 #:#:#:#:#:#:#:#:#:#:#:# End of User Input Section :#:#:#:#:#:#:#:#:#:#:#:#:#
 
