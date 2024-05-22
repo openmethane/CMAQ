@@ -213,7 +213,7 @@ echo IOAPIMOD $IOAPIMOD
  set F90_FLAGS  = "${myFRFLAGS} -I ${IOAPIMOD} -I ${PARIO} -I ${STENEX} -I ${MPI_INC} -I."
  set CPP_FLAGS  = ""
  set C_FLAGS    = "${myCFLAGS} -DFLDMN -I ${MPI_INC}"
- set LINK_FLAGS = "${myLINK_FLAG} -qopenmp"
+ set LINK_FLAGS = "${myLINK_FLAG} -fopenmp"
 
 #:#:#:#:#:#:#:#:#:#:#:# End of User Input Section :#:#:#:#:#:#:#:#:#:#:#:#:#
 
@@ -237,7 +237,6 @@ echo IOAPIMOD $IOAPIMOD
  set LIB1 = "-L${STENEX} -l${seL}"
  set LIB5 = "-L${LIOAPI}"
  set LIB6 = "-L${NETCDF}"
- set LIB7 = "-L/home/563/jds563/programs/pvm3/lib/LINUX64 -lpvm3 -lfpvm3"
  set LIB7 = ""
 
  set LIBS = "$LIB1 $LIB2 $LIB3 $LIB4 $LIB5 $LIB6 $LIB7"

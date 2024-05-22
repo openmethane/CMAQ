@@ -38,8 +38,6 @@
  endif
 
  set DEST = $M3LIB
- set DEST = /home/563/ns0890/programs/CMAQv5.0.2_notpollen/scripts/build/
- set echo
 
 #:#:#:#:#:#:#:#:#:#:#:# Begin User Input Section #:#:#:#:#:#:#:#:#:#:#:#
 

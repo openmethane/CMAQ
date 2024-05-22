@@ -116,7 +116,7 @@
  set F90_FLAGS  = "${myFRFLAGS} -I${IOAPIMOD} -I."
  set CPP_FLAGS  = ""
  set C_FLAGS    = "${myCFLAGS} -DFLDMN"
- set LINK_FLAGS = "${myLINK_FLAG} -lpthread -qopenmp"
+ set LINK_FLAGS = "${myLINK_FLAG} -lpthread -fopenmp"
 
 #:#:#:#:#:#:#:#:#:#:#:# End of User Input Section :#:#:#:#:#:#:#:#:#:#:#:#:#
 
