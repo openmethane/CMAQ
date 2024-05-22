@@ -1500,8 +1500,16 @@ SUBROUTINE rdwrfem (mcip_now)
         frc_urb(:,ny) = frc_urb(:,nym)
         WRITE (*,f6000) 'FRC_URB  ', frc_urb(lprt_metx, lprt_mety), 'fraction'
       ELSE
-        WRITE (*,f9400) TRIM(pname), 'FRC_URB', TRIM(nf90_strerror(rcode))
-        CALL graceful_stop (pname)
+       CALL get_var_2d_real_cdf (cdfid, 'FRC_URB2D', dum2d, it, rcode)
+       IF ( rcode == nf90_noerr ) THEN
+         frc_urb(1:nxm,1:nym) = dum2d(:,:)
+         frc_urb(nx,:) = frc_urb(nxm,:)
+         frc_urb(:,ny) = frc_urb(:,nym)
+         WRITE (*,f6000) 'FRC_URB  ', frc_urb(lprt_metx, lprt_mety), 'fraction'
+       ELSE
+         WRITE (*,f9400) TRIM(pname), 'FRC_URB', TRIM(nf90_strerror(rcode))
+         CALL graceful_stop (pname)
+       ENDIF
       ENDIF
     ENDIF
     IF ( lpv > 0 ) THEN

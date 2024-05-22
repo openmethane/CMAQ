@@ -21,6 +21,7 @@
 
 MODEL = mcip.exe
 NETCDF = /home/563/jds563/.local
+NETCDF = /apps/netcdf/4.7.1
 M3LIB=/home/563/jds563/programs/CMAQ
 IOAPI_ROOT = $(M3LIB)/ioapi-3.1
 PVM = /home/563/jds563/programs/pvm3
@@ -48,15 +49,15 @@ PVM = /home/563/jds563/programs/pvm3
 FC      = ifort
 FFLAGS  = -g -O0 -check all -C -traceback -FR -I$(NETCDF)/include  \
          -I$(IOAPI_ROOT)/Linux2_x86_64ifort
-FFLAGS  = -FR -O3 -traceback -I$(NETCDF)/include -I$(IOAPI_ROOT)/Linux2_x86_64ifort -openmp
+FFLAGS  = -FR -O3 -traceback -I$(NETCDF)/include -I$(IOAPI_ROOT)/Linux2_x86_64ifort -qopenmp
 # LIBS    = -L$(IOAPI_ROOT)/Linux2_x86_64ifort -lioapi \
 #          -L$(NETCDF)/lib -lnetcdf -lnetcdff \
 # 	   -L$(PVM)/lib/LINUX64 -lpvm3 \
 # 	   -limf
 LIBS    = -L$(IOAPI_ROOT)/Linux2_x86_64ifort -lioapi -lnetcdf \
-           -L$(NETCDF)/lib -lnetcdf -lnetcdff \
-	   -L$(PVM)/lib/LINUX64 -lpvm3 \
+           -L$(NETCDF)/lib -lnetcdf -L$(NETCDF)/Intel/lib -lnetcdff \
 	   -limf
+##	   -L$(PVM)/lib/LINUX64 -lpvm3 \
 
 DEFS   = 
 
