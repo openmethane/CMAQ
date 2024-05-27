@@ -16,7 +16,6 @@
  setenv M3HOME /opt/cmaq/CMAQv5.0.2_notpollen
  setenv M3MODEL ${M3HOME}/models
  setenv M3DATA  ${M3HOME}/data
- set EXEC_ID  = Linux2_aarch64gfortran
 #===============================================================================
 
 #> architecture & compiler specific settings
@@ -30,6 +29,7 @@ setenv COMPILER gcc
  setenv system "`/bin/uname -i`"
  setenv bld_os "`/bin/uname -s``/bin/uname -r | cut -d. -f1`"
  setenv lib_basedir $M3HOME/lib
+
 ######## set these extra library paths only if needed for your architecture
 #setenv extra_lib "-openmp"
 #setenv extra_lib "-lrdmacm -libumad -lopa -lmpl -lrt -lpthread -libverbs -ldl"
