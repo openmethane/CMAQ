@@ -1,0 +1,13 @@
+! RCS file, release, date & time of last delta, author, state, [and locker]
+! $Header: /project/yoj/arc/MECHS/src/cb05cl_ae5_aq/NR_cb05cl_ae5_aq.nml,v 1.1 2011/12/09 11:49:57 yoj Exp $
+
+&NR_nml
+ 
+n_surr1 = 4,
+n_surr2 = 2,
+n_ctrl = 4,
+ 
+TYPE_HEADER =
+'SPC:MOLWT:EMIS_SUR:EMIS_FAC:DEPV_SUR:DEPV_FAC:ICBC_SUR:ICBC_FAC:SCAV_SUR:SCAV_FAC:N2AE_SUR:N2AQ_SUR:TRNS:DDEP:WDEP:CONC',
+TYPE_MATRIX =
+/
