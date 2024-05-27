@@ -127,7 +127,7 @@
  set IOAPIMOD = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext}"
 
 # set NETCDF = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext} -lnetcdf"
- set NETCDF = "/apps/netcdf/4.7.1/lib -lnetcdf -L/apps/netcdf/4.7.1/lib/Intel -lnetcdff"
+ set NETCDF = "`nf-config --flibs`"
 
  set PARMOD = "."
  set STENEX = "."
@@ -163,7 +163,7 @@
  set STX  = 
 
  set LIB4 = "-L${IOAPI}"
- set LIB5 = "-L${NETCDF}"
+ set LIB5 = "${NETCDF}"
  set LIBS = "$LIB1 $LIB2 $LIB3 $LIB4 $LIB5 ${extra_lib}"
 
  source $Base/relinc.icon

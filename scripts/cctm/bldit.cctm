@@ -197,7 +197,8 @@ echo LIOAPI $LIOAPI
 echo IOAPIMOD $IOAPIMOD
 
 # set NETCDF = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext} -lnetcdf"
- set NETCDF = "${NETCDF_BASE}/lib -lnetcdf -L${NETCDF_BASE}/lib/Intel -lnetcdff"
+# set NETCDF = "${NETCDF_BASE}/lib -lnetcdf -L${NETCDF_BASE}/lib/Intel -lnetcdff"
+ set NETCDF = "`nf-config --flibs`"
 
  if ( $?ParOpt ) then      # Multiprocessor system configuration
     set PARIO = ${M3LIB}/pario
@@ -236,7 +237,7 @@ echo IOAPIMOD $IOAPIMOD
 
  set LIB1 = "-L${STENEX} -l${seL}"
  set LIB5 = "-L${LIOAPI}"
- set LIB6 = "-L${NETCDF}"
+ set LIB6 = "${NETCDF}"
  set LIB7 = ""
 
  set LIBS = "$LIB1 $LIB2 $LIB3 $LIB4 $LIB5 $LIB6 $LIB7"
