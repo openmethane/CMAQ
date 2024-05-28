@@ -191,8 +191,8 @@ set ModGas    = gas/blank
  set Blder = $M3LIB/bldmake
 
 #> Set location of libraries/include files
- set LIOAPI  = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext} -lioapi"
- set IOAPIMOD = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext}"
+ set LIOAPI  = "${M3HOME}/lib/ioapi-3.1/${EXEC_ID} -lioapi"
+ set IOAPIMOD = "${M3HOME}/lib/ioapi-3.1/${EXEC_ID}"
 echo LIOAPI $LIOAPI
 echo IOAPIMOD $IOAPIMOD
 

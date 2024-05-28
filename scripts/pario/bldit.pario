@@ -55,7 +55,7 @@
 
  set MPI_INC  = ${M3HOME}/lib/mpich/include
  set IOAPIEXT = ${M3HOME}/lib/ioapi-3.1/ioapi/fixed_src
- set IOAPIMOD = ${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext}
+ set IOAPIMOD = ${M3HOME}/lib/ioapi-3.1/${BIN}
 
 #> Set full path of Fortran 90 compiler
  set FC   = ${myFC}

@@ -105,11 +105,11 @@
  set Blder = $M3LIB/bldmake
 
 #> Set location of libraries/include files
- set LIOAPI  = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext} -lioapi"
- set IOAPIMOD = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext}"
+ set LIOAPI  = "${M3HOME}/lib/ioapi-3.1/${EXEC_ID} -lioapi"
+ set IOAPIMOD = "${M3HOME}/lib/ioapi-3.1/${EXEC_ID}"
 
 # set NETCDF = "${M3HOME}/lib/netcdf/lib -lnetcdf -L${M3HOME}/lib/netcdf/lib/Intel -lnetcdff -L${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext} -lnetcdf"
- set NETCDF = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext} -L/apps/netcdf/4.7.1/lib -lnetcdf -L/apps/netcdf/4.7.1/lib/Intel -lnetcdff"
+ set NETCDF = "`nf-config --flibs`"
 
 #> Set compiler flags
  set F_FLAGS    = "${myFFLAGS} -I${IOAPIMOD} -I."
@@ -134,7 +134,7 @@
 #:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#
 
  set LIB1 = "-L${LIOAPI}"
- set LIB2 = "-L${NETCDF}"
+ set LIB2 = "${NETCDF}"
  set LIBS = "$LIB1 $LIB2"
 
  source $Base/relinc.jproc
