@@ -34,7 +34,7 @@ C Includes:
  
 !     INCLUDE SUBST_HGRD_ID     ! horizontal dimensioning parameters
 !     INCLUDE SUBST_VGRD_ID     ! vertical dimensioning parameters
-      INCLUDE SUBST_IODECL      ! I/O definitions and declarations
+!      INCLUDE SUBST_IODECL      ! I/O definitions and declarations
 
 c Arguments
 
@@ -57,10 +57,10 @@ C-----------------------------------------------------------------------
  
       IF ( FIRSTIME ) THEN
          FIRSTIME = .FALSE.
-         LOGDEV = INIT3()
-         WRITE( LOGDEV,* ) '    '
-         WRITE( LOGDEV,* ) '    Using no-op aerosol process'
-         WRITE( LOGDEV,* ) '    '
+!        LOGDEV = INIT3()
+!        WRITE( LOGDEV,* ) '    '
+!        WRITE( LOGDEV,* ) '    Using no-op aerosol process'
+!        WRITE( LOGDEV,* ) '    '
          END IF
  
       RETURN
