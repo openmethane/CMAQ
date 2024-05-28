@@ -80,8 +80,15 @@
 
 #> If this is a nested simulation, use the m3conc option to extract BCs from a CCTM CONC file
 # set ModType   = profile
- set ModType   = m3conc
+# set ModType   = m3conc
 #set ModType   = tracer
+
+ if ( $?MODTYPE ) then
+    set ModType   = $MODTYPE
+ else
+    echo "MODTYPE environment variable not set"
+    exit 1
+ endif
 
 # set ModMech   = prof_data/cb05tucl_ae6_aq_RN2
 # set ModMech   = prof_data/CO2only
