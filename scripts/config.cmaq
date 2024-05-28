@@ -97,5 +97,5 @@ setenv extra_lib
        setenv MPI_INC /usr/lib/${system}-linux-gnu/openmpi/include
 
 #> set executable id
- setenv EXEC_ID ${bld_os}_${system}${compiler}
+ setenv EXEC_ID ${bld_os}_${system}${compiler_ext}
 # unset echo
