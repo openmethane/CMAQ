@@ -338,7 +338,7 @@ C$$$         asoil_idx  = findAero( req_soil,  .True. )
 C$$$         acors_idx  = findAero( req_cors,  .True. )
 
 C Compute common factors
-         h2ofac = 1.0D-9 * f6dpi / Real( aerospc( 1000.0 )%density, 8 )
+         h2ofac = 1.0D-9 * f6dpi / Real( aerospc( ah2o_idx )%density, 8 )
 
 C compute aeromode_minNum and aeromode_minM2
 C$$$        so4fac  = 1.0E-9 * f6dpi / aerospc( aso4_idx )%density
