@@ -233,6 +233,9 @@ c inter-processor swap within a 4d array
       implicit none
       include 'mpif.h'
 
+! The CMAQ release had an inversion of the send and recv code below commented out
+! This was causing SEGSEGV and general memory issues when running with gfortran
+! Fixed in commit fff90aaa26cb1fd6e413a752a52667d7b6dacdce
       real send(*)           ! 1st value to be sent
       real recv(*)           ! 1st value to be received
 !     real send(:,:,:,:)           ! 1st value to be sent
