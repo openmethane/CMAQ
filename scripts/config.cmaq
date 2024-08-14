@@ -75,9 +75,9 @@ setenv extra_lib
        setenv myFC mpif90 #gfortran
        setenv myCC gcc
        setenv myLINK_FLAG ""
-       setenv myFFLAGS "-ffixed-form -ffixed-line-length-132 -O3 -funroll-loops -finit-character=32"
-       setenv myFRFLAGS "-ffree-form -ffree-line-length-none -O3 -funroll-loops -finit-character=32"
-       setenv myCFLAGS "-O2"
+       setenv myFFLAGS "-ffixed-form -ffixed-line-length-132 -g -O2 -fbacktrace -funroll-loops -finit-character=32"
+       setenv myFRFLAGS "-ffree-form -ffree-line-length-none -g -O2 -fbacktrace -funroll-loops -finit-character=32"
+       setenv myCFLAGS "-g -O2 -fbacktrace"
        setenv extra_lib
        setenv extra_lib "$extra_lib -lgomp"
        breaksw
