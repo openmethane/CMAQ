@@ -61,7 +61,7 @@
  set FC   = ${myFC}
  set FSTD = "${myFFLAGS}"
 
- set DEBUG     # Uncomment to create debug version of library
+#set DEBUG     # Uncomment to create debug version of library
  if ( $?DEBUG ) then
     set F_FLAGS = "${FSTD} -c -g -I ${IOAPIMOD} -I ${IOAPIEXT} -I ${MPI_INC}"
  else
