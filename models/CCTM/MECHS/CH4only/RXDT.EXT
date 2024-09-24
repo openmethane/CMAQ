@@ -1,0 +1,145 @@
+
+C RCS file, release, date & time of last delta, author, state, [and locker]
+C $Header: /project/yoj/arc/MECHS/src/cb05cl_ae5_aq/RXDT.EXT,v 1.3 2011/08/30 21:03:49 sjr Exp $
+
+C what(1) key, module and SID; SCCS file; date and time of last delta:
+C %W% %P% %G% %U%
+
+C --------- Mechanism Reactions, Rates, etc. DATA INCLUDE File ---------
+C  /home/hutzellb/cmaq_toxics/releases_2010/new_arc_mechanisms
+C  /cb05cl_ae5_aq/RXDT.EXT
+C Generated from ...
+C  /home/hutzellb/cmaq_toxics/releases_2010/new_arc_mechanisms
+C  /cb05cl_ae5_aq/mech.def
+C for Mechanism Name: CB05CL_AE5_AQ                   
+
+C This DATA INCLUDE file must be preceded by the corresponding
+C COMMON INCLUDE file, which contains all the appropriate type
+C declarations for this file.  The DATA INCLUDE file is meant
+C to load the COMMON INCLUDE file.
+
+C The following are reserved symbols declared in this INCLUDE file:
+C    IRXXN = Reactions index
+
+      CHARACTER( 16 ) :: GAS_CHEM_SPC( N_GAS_CHEM_SPC )
+
+! The below character array lists the species names used in the 
+! gas phase chemistry. The names and their order MUST agree with 
+! the GC_SPC array for the gas phase chemistry to work correctly. 
+      DATA GAS_CHEM_SPC(  1 ) / 'CH4             ' /
+
+c$$$      DATA  KUNITS /   2 /
+c$$$
+      INTEGER IRXXN
+c$$$
+c$$$      DATA ( KTYPE( IRXXN ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( IRXBITS( IRXXN ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( IORDER( IRXXN ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( KRX1( IRXXN ), IRXXN = 1, KTN1 ) / / 
+c$$$
+c$$$      DATA ( KRX2( IRXXN ), IRXXN = 1, KTN2 ) / /
+c$$$
+c$$$      DATA ( KRX3( IRXXN ), IRXXN = 1, KTN3 ) / /
+c$$$
+c$$$      DATA ( KRX4( IRXXN ), IRXXN = 1, KTN4 ) / /
+c$$$
+c$$$      DATA   KRX5( 1 ) / 0 /
+c$$$
+c$$$      DATA   KRX6( 1 ) / 0 /
+c$$$
+c$$$      DATA   KRX7( 1 ) / 0 /
+c$$$
+c$$$      DATA ( NRXWM( IRXXN ), IRXXN = 1, NWM ) / /
+c$$$
+c$$$      DATA ( NRXWW( IRXXN ), IRXXN = 1, NWW ) / /
+c$$$
+c$$$      DATA ( NRXWO2( IRXXN ), IRXXN = 1, NWO2 ) / /
+c$$$
+c$$$      DATA   NRXWN2( 1 ) / 0 /
+c$$$
+c$$$      DATA ( NRXWCH4( IRXXN ), IRXXN = 1, NWCH4 ) / /
+c$$$
+c$$$      DATA ( NRXWH2( IRXXN ), IRXXN = 1, NWH2 ) / /
+c$$$
+c$$$      DATA ( IRR( IRXXN,  1 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( IRR( IRXXN,  2 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( IRR( IRXXN,  3 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( IRR( IRXXN,  4 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( IRR( IRXXN,  5 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( IRR( IRXXN,  6 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( IRR( IRXXN,  7 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( IRR( IRXXN,  8 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( IRR( IRXXN,  9 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( IRR( IRXXN, 10 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( IRR( IRXXN, 11 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( IRR( IRXXN, 12 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( IRR( IRXXN, 13 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( RTDAT( 1,IRXXN ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( RTDAT( 2,IRXXN ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( RTDAT( 3,IRXXN ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( IRRFALL( IRXXN ), IRXXN = 1, NFALLOFF ) / /
+c$$$
+c$$$      DATA ( RFDAT( 1,IRXXN ), IRXXN = 1, NFALLOFF ) / /
+c$$$
+c$$$      DATA ( RFDAT( 2,IRXXN ), IRXXN = 1, NFALLOFF ) / /
+c$$$
+c$$$      DATA ( RFDAT( 3,IRXXN ), IRXXN = 1, NFALLOFF ) / /
+c$$$
+c$$$      DATA ( RFDAT( 4,IRXXN ), IRXXN = 1, NFALLOFF ) / /
+c$$$
+c$$$      DATA ( RFDAT( 5,IRXXN ), IRXXN = 1, NFALLOFF ) / /
+c$$$
+c$$$      DATA ( SC( IRXXN,  1 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( SC( IRXXN,  2 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( SC( IRXXN,  3 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( SC( IRXXN,  4 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( SC( IRXXN,  5 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( SC( IRXXN,  6 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( SC( IRXXN,  7 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( SC( IRXXN,  8 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( SC( IRXXN,  9 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( SC( IRXXN, 10 ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( NREACT( IRXXN ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( NPRDCT( IRXXN ), IRXXN = 1, NRXNS ) / /
+c$$$
+c$$$      DATA ( IPH( IRXXN,1 ), IRXXN = 1, NMPHOT ) / /
+c$$$
+c$$$      DATA ( IPH( IRXXN,2 ), IRXXN = 1, NMPHOT ) / /
+c$$$
+c$$$      DATA ( IPH( IRXXN,3 ), IRXXN = 1, NMPHOT ) / /
+c$$$
+c$$$      DATA ( PHOTAB( IRXXN ), IRXXN = 1, NPHOTAB ) / /
+c$$$
+c$$$      DATA ( RXLABEL( IRXXN ), IRXXN = 1, NRXNS ) / /
+
+C End of Mechanism Reactions, Rates, etc. DATA INCLUDE File ------------

@@ -1,0 +1,13 @@
+ CB05 gas mechanism with AERO5 species and toxics
+ bcon profile data converted from RADM2 gas mechanism species
+  layers and defined sigma levels are listed below.
+    6  1     1.00  0.98  0.93  0.84  0.60  0.30  0.00
+ 2011-08-10
+  North
+"CH4             "   1.8       1.8       1.8       1.8       1.8       1.8    
+  East 
+"CH4             "   1.8       1.8       1.8       1.8       1.8       1.8    
+  South
+"CH4             "   1.8       1.8       1.8       1.8       1.8       1.8    
+  West 
+"CH4             "   1.8       1.8       1.8       1.8       1.8       1.8    

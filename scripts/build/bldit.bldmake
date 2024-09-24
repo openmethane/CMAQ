@@ -39,8 +39,6 @@
 
  set DEST = $M3LIB
 
- set echo
-
 #:#:#:#:#:#:#:#:#:#:#:# Begin User Input Section #:#:#:#:#:#:#:#:#:#:#:#
 
 #> user choices: Git repository

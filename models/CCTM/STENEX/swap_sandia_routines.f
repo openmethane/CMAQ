@@ -233,10 +233,13 @@ c inter-processor swap within a 4d array
       implicit none
       include 'mpif.h'
 
-!     real send(*)           ! 1st value to be sent
-!     real recv(*)           ! 1st value to be received
-      real send(:,:,:,:)           ! 1st value to be sent
-      real recv(:,:,:,:)           ! 1st value to be received
+! The CMAQ release had an inversion of the send and recv code below commented out
+! This was causing SEGSEGV and general memory issues when running with gfortran
+! Fixed in commit fff90aaa26cb1fd6e413a752a52667d7b6dacdce
+      real send(*)           ! 1st value to be sent
+      real recv(*)           ! 1st value to be received
+!     real send(:,:,:,:)           ! 1st value to be sent
+!     real recv(:,:,:,:)           ! 1st value to be received
       integer n1,n2,n3,n4    ! # of values to send in each dim of 4d array
       integer dim1,dim2,dim3 ! 1st,2nd,3rd dimensions of 4d array
       integer dir	     ! direction to recv from: NSEW
@@ -244,7 +247,7 @@ c inter-processor swap within a 4d array
       integer i,j,k,l,m,n,ntotal,offset_ij,offset_jk,offset_kl
       integer recvproc,sendproc
       integer irequest,istatus(MPI_STATUS_SIZE),ierror
-!     real, allocatable :: rbuf(:),sbuf(:)
+      real, allocatable :: rbuf(:),sbuf(:)
 
       ntotal = n1*n2*n3*n4
       offset_ij = dim1 - n1
@@ -254,66 +257,66 @@ c inter-processor swap within a 4d array
       sendproc = sendneigh(dir)
 
       if (recvproc >= 0) then
-!       allocate(rbuf(ntotal))
-!       call MPI_Irecv(rbuf,ntotal,MPI_REAL,recvproc,0,MPI_COMM_WORLD,
-        call MPI_Irecv(recv,ntotal,MPI_REAL,recvproc,0,MPI_COMM_WORLD,
+        allocate(rbuf(ntotal))
+        call MPI_Irecv(rbuf,ntotal,MPI_REAL,recvproc,0,MPI_COMM_WORLD,
+!       call MPI_Irecv(recv,ntotal,MPI_REAL,recvproc,0,MPI_COMM_WORLD,
      $       irequest,ierror)
       endif
 
       if (sendproc >= 0) then
   
-!       allocate(sbuf(ntotal))
+        allocate(sbuf(ntotal))
   
-!       m = 1
-!       n = 1
+        m = 1
+        n = 1
 
-!       do l = 1,n4
-!         do k = 1,n3
-!           do j = 1,n2
-!             do i = 1,n1
-!               sbuf(n) = send(m)
-!               n = n + 1
-!               m = m + 1
-!             enddo
-!             m = m + offset_ij
-!           enddo
-!           m = m + offset_jk
-!         enddo
-!         m = m + offset_kl
-!       enddo
-! 
-!       call MPI_Send(sbuf,ntotal,MPI_REAL,sendproc,0,MPI_COMM_WORLD,
-        call MPI_Send(send,ntotal,MPI_REAL,sendproc,0,MPI_COMM_WORLD,
+        do l = 1,n4
+          do k = 1,n3
+            do j = 1,n2
+              do i = 1,n1
+                sbuf(n) = send(m)
+                n = n + 1
+                m = m + 1
+              enddo
+              m = m + offset_ij
+            enddo
+            m = m + offset_jk
+          enddo
+          m = m + offset_kl
+        enddo
+
+        call MPI_Send(sbuf,ntotal,MPI_REAL,sendproc,0,MPI_COMM_WORLD,
+!       call MPI_Send(send,ntotal,MPI_REAL,sendproc,0,MPI_COMM_WORLD,
      $       ierror)
   
-!       deallocate(sbuf)
+        deallocate(sbuf)
   
       endif
   
       if (recvproc >= 0) then
   
         call MPI_Wait(irequest,istatus,ierror)
-! 
-!       m = 1
-!       n = 1
 
-!       do l = 1,n4
-!         do k = 1,n3
-!           do j = 1,n2
-!             do i = 1,n1
-!               recv(m) = rbuf(n)
-!               n = n + 1
-!               m = m + 1
-!             enddo
-!             m = m + offset_ij
-!           enddo
-!           m = m + offset_jk
-!         enddo
-!         m = m + offset_kl
-!       enddo
+        m = 1
+        n = 1
 
-!       deallocate(rbuf)
-! 
+        do l = 1,n4
+          do k = 1,n3
+            do j = 1,n2
+              do i = 1,n1
+                recv(m) = rbuf(n)
+                n = n + 1
+                m = m + 1
+              enddo
+              m = m + offset_ij
+            enddo
+            m = m + offset_jk
+          enddo
+          m = m + offset_kl
+        enddo
+
+        deallocate(rbuf)
+
       endif
   
       return

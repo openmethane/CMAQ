@@ -51,7 +51,7 @@ C but also obtain the count on the number of itmes (=3).
       INTEGER, INTENT ( OUT ) :: NVARS
       CHARACTER( 16 ), INTENT ( OUT ) :: VAL_LIST( : )
 
-      INTEGER, PARAMETER   :: MAX_LEN = 512
+      INTEGER, PARAMETER   :: MAX_LEN = 2048
       CHARACTER(  16 )     :: PNAME = 'GET_ENVLIST'
       CHARACTER( MAX_LEN ) :: E_VAL
       CHARACTER(   1 )     :: CHR

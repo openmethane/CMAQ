@@ -50,9 +50,9 @@
 
 #> user choices: base working directory
  set Base = $cwd
- set APPL  = D502a
+# set APPL  = D502a_cb05tucl_ae6_aq
+ set APPL  = CH4only
  set CFG   = cfg.$APPL
- set MODEL = ICON_${APPL}_$EXEC_ID
 
 #set Local   # do NOT copy the source files into the BLD directory -
              # comment out to copy the source files (default if not set)
@@ -79,17 +79,26 @@
  set ModCommon = common
 
  set ModType   = profile
-#set ModType   = m3conc
+# set ModType   = m3conc
 #set ModType   = tracer
 
- set ModMech   = prof_data/cb05_ae6_aq
+ set ModMech   = prof_data/cb05tucl_ae6_aq_RN2
+# set ModMech   = prof_data/CO2only
+ set ModMech   = prof_data/CH4only
+# set ModMech   = prof_data/cb05tucl_ae6_aq_CO2
+# set ModMech   = prof_data/cb05tucl_ae6_aq 
 #set ModMech   = prof_data/saprc99_ae6_aq
 #set ModMech   = prof_data/saprc07t_ae6_aq
 
 #> user choices: mechanism
 #set Mechanism = cb05cl_ae5_aq
 #set Mechanism = cb05tucl_ae5_aq
- set Mechanism = cb05tucl_ae6_aq
+#set Mechanism = cb05tucl_ae6_aq_RN2
+# set Mechanism = CO2only
+ set Mechanism = CH4only
+#set Mechanism = cb05tucl_ae6_aq_CO2
+#set Mechanism = cb05tucl_ae6_aq
+
 #set Mechanism = cb05tump_ae6_aq
 #set Mechanism = saprc99_ae5_aq
 #set Mechanism = saprc99_ae6_aq
@@ -104,6 +113,8 @@
 
  set Bld = $Base/BLD_${APPL}
 
+ set MODEL = ICON_${APPL}_${EXEC_ID}_${ModType}_${Mechanism}
+
 #> Set full path of Fortran 90 compiler
  set FC = ${myFC}
  set FP = $FC
@@ -112,11 +123,11 @@
  set Blder = $M3LIB/bldmake
 
 #> Set location of libraries/include files
- set IOAPI  = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext} -lioapi"
- set IOAPIMOD = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext}"
+ set IOAPI  = "${M3HOME}/lib/ioapi-3.1/${EXEC_ID} -lioapi"
+ set IOAPIMOD = "${M3HOME}/lib/ioapi-3.1/${EXEC_ID}"
 
 # set NETCDF = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext} -lnetcdf"
- set NETCDF = "/home/563/jds563/.local/lib -lnetcdf  -lnetcdff"
+ set NETCDF = "`nf-config --flibs`"
 
  set PARMOD = "."
  set STENEX = "."
@@ -127,7 +138,7 @@
  set F90_FLAGS  = "${myFRFLAGS} -I ${IOAPIMOD} -I ${PARMOD} -I ${STENEX} -I."
  set CPP_FLAGS  = ""
  set C_FLAGS    = "${myCFLAGS} -DFLDMN -I ${MPI_INC}"
- set LINK_FLAGS = "${myLINK_FLAG} -lpthread -openmp"
+ set LINK_FLAGS = "${myLINK_FLAG} -fopenmp"
 
 #:#:#:#:#:#:#:#:#:#:#:# End of User Input Section :#:#:#:#:#:#:#:#:#:#:#:#:#
 
@@ -152,7 +163,7 @@
  set STX  = 
 
  set LIB4 = "-L${IOAPI}"
- set LIB5 = "-L${NETCDF}"
+ set LIB5 = "${NETCDF}"
  set LIBS = "$LIB1 $LIB2 $LIB3 $LIB4 $LIB5 ${extra_lib}"
 
  source $Base/relinc.icon

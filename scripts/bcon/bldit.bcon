@@ -50,9 +50,9 @@
 
 #> user choices: base working directory
  set Base = $cwd
- set APPL  = D502a
+ #set APPL  = D502a_cb05tucl_ae6_aq
+ set APPL  = CH4only
  set CFG   = cfg.$APPL
- set MODEL = BCON_${APPL}_$EXEC_ID
 
 #set Local   # do NOT copy the source files into the BLD directory -
              # comment out to copy the source files (default if not set)
@@ -79,18 +79,33 @@
  set ModCommon = common
 
 #> If this is a nested simulation, use the m3conc option to extract BCs from a CCTM CONC file
- set ModType   = profile
-#set ModType   = m3conc
+# set ModType   = profile
+# set ModType   = m3conc
 #set ModType   = tracer
 
- set ModMech   = prof_data/cb05_ae6_aq
+ if ( $?MODTYPE ) then
+    set ModType   = $MODTYPE
+ else
+    echo "MODTYPE environment variable not set"
+    exit 1
+ endif
+
+# set ModMech   = prof_data/cb05tucl_ae6_aq_RN2
+# set ModMech   = prof_data/CO2only
+ set ModMech   = prof_data/CH4only
+# set ModMech   = prof_data/cb05tucl_ae6_aq_CO2
+# set ModMech   = prof_data/cb05tucl_ae6_aq 
 #set ModMech   = prof_data/saprc99_ae6_aq
 #set ModMech   = prof_data/saprc07t_ae6_aq
 
 #> user choices: mechanism
 #set Mechanism = cb05cl_ae5_aq
 #set Mechanism = cb05tucl_ae5_aq
- set Mechanism = cb05tucl_ae6_aq
+# set Mechanism = cb05tucl_ae6_aq_RN2
+# set Mechanism = CO2only
+ set Mechanism = CH4only
+# set Mechanism = cb05tucl_ae6_aq_CO2
+# set Mechanism = cb05tucl_ae6_aq
 #set Mechanism = cb05tump_ae6_aq
 #set Mechanism = saprc99_ae5_aq
 #set Mechanism = saprc99_ae6_aq
@@ -104,6 +119,8 @@
 #>    library paths
 
  set Bld = $Base/BLD_${APPL}
+ 
+ set MODEL = BCON_${APPL}_${EXEC_ID}_${ModType}_${Mechanism}
 
 #> Set full path of Fortran 90 compiler
  set FC = ${myFC}
@@ -113,19 +130,20 @@
  set Blder = $M3LIB/bldmake
 
 #> Set location of libraries/include files
- set IOAPI  = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext} -lioapi"
- set IOAPIMOD = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext}"
+ set IOAPI  = "${M3HOME}/lib/ioapi-3.1/${EXEC_ID} -lioapi"
+ set IOAPIMOD = "${M3HOME}/lib/ioapi-3.1/${EXEC_ID}"
 
 # set NETCDF = "${M3LIB}/netcdf/lib -lnetcdf"
 # set NETCDF = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext} -lnetcdf"
- set NETCDF = "/home/563/jds563/.local/lib -lnetcdf  -lnetcdff"
+ #set NETCDF = "/apps/netcdf/4.7.1/lib -lnetcdf -L/apps/netcdf/4.7.1/lib/Intel -lnetcdff"
+ set NETCDF = "`nf-config --flibs`"
 
 #> Set compiler flags
  set F_FLAGS    = "${myFFLAGS} -I ${IOAPIMOD} -I."
  set F90_FLAGS  = "${myFRFLAGS} -I ${IOAPIMOD} -I."
  set CPP_FLAGS  = ""
  set C_FLAGS    = "${myCFLAGS} -DFLDMN"
- set LINK_FLAGS = "${myLINK_FLAG}  -lpthread -openmp"
+ set LINK_FLAGS = "${myLINK_FLAG} -lpthread -fopenmp"
 
 #:#:#:#:#:#:#:#:#:#:#:# End of User Input Section :#:#:#:#:#:#:#:#:#:#:#:#:#
 
@@ -146,7 +164,7 @@
  set Str2 =
 
  set LIB1 = "-L${IOAPI}"
- set LIB2 = "-L${NETCDF}"
+ set LIB2 = "${NETCDF}"
  set LIBS = "$LIB1 $LIB2 ${extra_lib}"
 
  source $Base/relinc.bcon
@@ -222,15 +240,19 @@
  unalias mv rm
  if ( $?MakeFileOnly ) then
     if ( $?Local ) then
+       echo $Blder -makefo -git_local $Cfile   # $Cfile = ${CFG}.bld
        $Blder -makefo -git_local $Cfile   # $Cfile = ${CFG}.bld
     else
+       echo $Blder -makefo $Cfile
        $Blder -makefo $Cfile
      # totalview -a $Blder -makefo $Cfile
     endif
  else   # also compile the model
     if ( $?Local ) then
+       echo $Blder -git_local $Cfile
        $Blder -git_local $Cfile
     else
+       echo $Blder $Cfile
        $Blder $Cfile
     endif
  endif

@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#! /bin/csh -f
 
 # ================= CMAQ5.0.2 Configuration Script ================== #
 # Requirements: I/O API & netCDF libs, PGI, Intel, Gnu Compiler       #
@@ -13,24 +13,24 @@
 #> sourced from bldit.<model>
 
 #> model repository location
- setenv M3HOME /home/563/jds563/programs/CMAQ/CMAQv5.0.2_notpollen
+ setenv M3HOME /opt/cmaq/CMAQv5.0.2_notpollen
  setenv M3MODEL ${M3HOME}/models
- setenv M3DATA  /short/w22/jds563/data/CMAQ-benchmark/CMAQv5.0.2/data
-
+ setenv M3DATA  ${M3HOME}/data
 #===============================================================================
 
 #> architecture & compiler specific settings
 #-------------------------------------------------------------------------------
 
 #> set the COMPILER
-  setenv COMPILER intel
+#   setenv COMPILER intel
 # setenv COMPILER pgi
-# setenv COMPILER gcc
+setenv COMPILER gcc
 
- setenv system "`/bin/uname -i`"
+ setenv system "`/bin/uname -m`"
  setenv bld_os "`/bin/uname -s``/bin/uname -r | cut -d. -f1`"
  setenv lib_basedir $M3HOME/lib
-######## set these extra library paths only if needed for your architecture 
+
+######## set these extra library paths only if needed for your architecture
 #setenv extra_lib "-openmp"
 #setenv extra_lib "-lrdmacm -libumad -lopa -lmpl -lrt -lpthread -libverbs -ldl"
 #setenv extra_lib "-lrdmacm -libumad "
@@ -46,10 +46,8 @@ setenv extra_lib
 ##> Intel fortran compiler......................................................
        setenv compiler intel
        setenv compiler_ext ifort
-       setenv myFC /home/563/jds563/.local/bin/mpif90
-       setenv myCC /home/563/jds563/.local/bin/mpicc
-       #setenv myFC ifort
-       #setenv myCC icc
+       setenv myFC mpif90
+       setenv myCC mpicc
        setenv myLINK_FLAG "-i-static"
        setenv myFFLAGS "-fixed -132 -O3 -override-limits -fno-alias -mp1 -fp-model precise"
        setenv myFRFLAGS "-free -O3 -fno-alias -mp1 -fp-model precise"
@@ -77,9 +75,9 @@ setenv extra_lib
        setenv myFC mpif90 #gfortran
        setenv myCC gcc
        setenv myLINK_FLAG ""
-       setenv myFFLAGS "-ffixed-form -ffixed-line-length-132 -O3 -funroll-loops -finit-character=32"
-       setenv myFRFLAGS "-ffree-form -ffree-line-length-none -O3 -funroll-loops -finit-character=32"
-       setenv myCFLAGS "-O2"
+       setenv myFFLAGS "-ffixed-form -ffixed-line-length-132 -g -O2 -fbacktrace -funroll-loops -finit-character=32"
+       setenv myFRFLAGS "-ffree-form -ffree-line-length-none -g -O2 -fbacktrace -funroll-loops -finit-character=32"
+       setenv myCFLAGS "-g -O2 -fbacktrace"
        setenv extra_lib
        setenv extra_lib "$extra_lib -lgomp"
        breaksw
@@ -90,15 +88,14 @@ setenv extra_lib
        breaksw
 
  endsw
- 
+
 #===============================================================================
 
 #> generate library locations
        setenv M3LIB ${lib_basedir}/${system}/${compiler}
        if ( ! -d $M3LIB ) mkdir -p $M3LIB
-       ## setenv MPI_INC $M3LIB/mpich/include
-       setenv MPI_INC ${HOME}/.local/include
+       setenv MPI_INC /usr/lib/${system}-linux-gnu/openmpi/include
 
 #> set executable id
- setenv EXEC_ID ${bld_os}_${system}${compiler}
+ setenv EXEC_ID ${bld_os}_${system}${compiler_ext}
 # unset echo

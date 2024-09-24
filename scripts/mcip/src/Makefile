@@ -21,6 +21,7 @@
 
 MODEL = mcip.exe
 NETCDF = /home/563/jds563/.local
+NETCDF = /apps/netcdf/4.7.1
 M3LIB=/home/563/jds563/programs/CMAQ
 IOAPI_ROOT = $(M3LIB)/ioapi-3.1
 PVM = /home/563/jds563/programs/pvm3
@@ -45,18 +46,14 @@ PVM = /home/563/jds563/programs/pvm3
 #         -L$(PVM)/lib -lpvm3
 
 #...Intel Fortran
-FC      = ifort
-FFLAGS  = -g -O0 -check all -C -traceback -FR -I$(NETCDF)/include  \
-         -I$(IOAPI_ROOT)/Linux2_x86_64ifort
-FFLAGS  = -FR -O3 -traceback -I$(NETCDF)/include -I$(IOAPI_ROOT)/Linux2_x86_64ifort -openmp
+#FC      = mpif90
+#FFLAGS  = -g -O3 -I${ROOT}/ioapi-3.1/${BIN} $(nf-config --fflags)
 # LIBS    = -L$(IOAPI_ROOT)/Linux2_x86_64ifort -lioapi \
 #          -L$(NETCDF)/lib -lnetcdf -lnetcdff \
 # 	   -L$(PVM)/lib/LINUX64 -lpvm3 \
 # 	   -limf
-LIBS    = -L$(IOAPI_ROOT)/Linux2_x86_64ifort -lioapi -lnetcdf \
-           -L$(NETCDF)/lib -lnetcdf -lnetcdff \
-	   -L$(PVM)/lib/LINUX64 -lpvm3 \
-	   -limf
+#LIBS    = -L${ROOT}/ioapi-3.1/${BIN} -lioapi -lnetcdf -lnetcdff -fopenmp
+##	   -L$(PVM)/lib/LINUX64 -lpvm3 \
 
 DEFS   = 
 

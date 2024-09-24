@@ -66,18 +66,42 @@ C Arguments:
 !     integer, parameter :: nlutyp = 21   ! number of landuse types
 !!!!!!! 12 km missing 'AGRICULTURE'
       integer, parameter :: nlutyp = 20   ! number of landuse types
+      integer, parameter :: nlutyp_usgs = 24   ! number of landuse types in the USGS database
 
       character( 16 ) :: vnmld( nlutyp ) =
-     &         (/ 'USGS_urban      ', 'USGS_drycrop    ', 'USGS_irrcrop    ',
-     &            'USGS_cropgrass  ', 'USGS_cropwdlnd  ', 'USGS_grassland  ', 
-     &            'USGS_shrubland  ', 'USGS_shrubgrass ', 'USGS_savanna    ', 
-     &            'USGS_decidforest', 'USGS_evbrdleaf  ', 'USGS_coniferfor ',
-     &            'USGS_mxforest   ', 'USGS_water      ', 'USGS_wetwoods   ',
-     &            'USGS_sprsbarren ', 'USGS_woodtundr  ', 'USGS_mxtundra   ',
-!    &            'USGS_snowice    ', 'AGRICULTURE     ', 'FOREST          ' /)
-     &            'USGS_snowice    ', 'FOREST          ' /)
+     &  (/ 'USGS_urban      ',   ! 1  LUFRAC_01: Urban Land                                      
+     $     'USGS_drycrop    ',   ! 2  LUFRAC_02: Dryland Cropland and Pasture, LUFRAC_04: Mixed Dryland and Irrigated Cropland and Pasture,                    
+     $     'USGS_irrcrop    ',   ! 3  LUFRAC_03: Irrigated Cropland and Pasture                  
+     $     'USGS_cropgrass  ',   ! 4  LUFRAC_05: Cropland-Grassland Mosaic                       
+     $     'USGS_cropwdlnd  ',   ! 5  LUFRAC_06: Cropland-Woodland Mosaic                        
+     $     'USGS_grassland  ',   ! 6  LUFRAC_07: Grassland                                       
+     $     'USGS_shrubland  ',   ! 7  LUFRAC_08: Shrubland                                       
+     $     'USGS_shrubgrass ',   ! 8  LUFRAC_09: Mixed Shrubland-Grassland                       
+     $     'USGS_savanna    ',   ! 9  LUFRAC_10: Savannah                                        
+     $     'USGS_decidforest',   ! 10 LUFRAC_11: Deciduous Broadleaf Forest,
+     $     'USGS_evbrdleaf  ',   ! 11 LUFRAC_13: Evergreen Broadleaf Forest,
+     $     'USGS_coniferfor ',   ! 12 LUFRAC_12: Deciduous Needleleaf Forest, LUFRAC_14: Evergreen Needleleaf Forest
+     $     'USGS_mxforest   ',   ! 13 LUFRAC_15: Mixed Forest                                    
+     $     'USGS_water      ',   ! 14 LUFRAC_16: Water                                           
+     $     'USGS_wetwoods   ',   ! 15 LUFRAC_17: Herbaceous Wetland, LUFRAC_18: Wooded Wetland
+     $     'USGS_sprsbarren ',   ! 16 LUFRAC_19: Barren or Sparsely Vegetated                    
+     $     'USGS_woodtundr  ',   ! 17 LUFRAC_21: Wooded Tundra                                   
+     $     'USGS_mxtundra   ',   ! 18 LUFRAC_22: Mixed Tundra, LUFRAC_20: Herbaceous Tundra, LUFRAC_23: Bare Ground Tundra
+     $     'USGS_snowice    ',   ! 19 LUFRAC_24: Snow or Ice                                     
+     $     'FOREST          ' /) ! 20                       
+                                   
+      character( 16 )    :: vnmld_usgs
+      integer, parameter :: nusgs = 24
+! map from USGS to ULAND categories, length = 24
+      integer            :: id_usgs(nusgs) = (/3, 2, 2, 2, 2, 2, 2, 1, 2, 2, 4, 4, 4, 4, 4, 1, 4, 4, 1, 1, 2, 1, 1, 1/)
+! map from USGS to BEIS3 categories
+! (/1,2,3,2,4,5,6,7,8,9,10,12,11,12,13,14,15,15,16,18,17,18,18,19/) ! length = 24
+! map from BEIS3 categories to ULAND categories
+! (/3, 2, 2, 2, 2, 2, 1, 2, 2, 4, 4, 4, 4, 1, 4, 1, 2, 1, 1, 4/)    ! length = 20
+                                  
+                                  
 
-      real   :: lut( ncols,nrows,nlutyp ) ! landuse type fraction
+      real   :: lut( ncols,nrows ) ! landuse type fraction
 
 C uland merging:
 C                                        water & barren surrounding
@@ -111,7 +135,7 @@ c                       + lut( c,r,21 )  'forest' (beld3)
       real              :: ufc  ! total weighted removal fraction for each cell
       real              :: tland
 
-      integer i, c, r
+      integer :: i, j, c, r
 
       real   :: fw( 4 ) = ! removal fraction in and below canopy
      &         (/ 0.0,    ! water
@@ -125,99 +149,42 @@ c                       + lut( c,r,21 )  'forest' (beld3)
 
       integer  gxoff, gyoff             ! global origin offset from file
       integer, save :: strtcol_01, endcol_01, strtrow_01, endrow_01
-      integer, save :: strtcol_02, endcol_02, strtrow_02, endrow_02
-
-!     integer  allocstat
-c-----------------------------------------------------------------------
-
-!dqt: We have disabled the rain impact on FW(2) 
-!dqt  if ( .not. open3( hname, fsread3, pname ) ) then
-!dqt     xmsg = 'could not open ' // hname // ' file'
-!dqt     call m3exit( pname, jdate, jtime, xmsg, xstat1 )
-!dqt  end if
-
-!dqt  call subhfile ( hname, gxoff, gyoff,
-!dqt &    strtcol, endcol, strtrow, endrow )
-
-!dqt  allocate ( rainf( ncols,nrows ), stat = allocstat )
-!dqt  if ( allocstat .ne. 0 ) then
-!dqt     xmsg = 'Failure allocating rainf'
-!dqt     call m3exit( pname, jdate, jtime, xmsg, xstat1 )
-!dqt  end if
-
-!dqt  if ( .not. interpx ( hname, 'rain', pname,
-!dqt &                     strtcol,endcol,strtrow,endrow, 1,1,
-!dqt &                     jdate, jtime, rainf ) ) then
-!dqt     xmsg = 'Could not read rainfall from ' // hname
-!dqt     call m3exit ( pname, jdate, jtime, xmsg, xstat1 )
-!dqt  end if
-
-C Open the BELD1 file
-      if ( .not. open3( dust_lu_1, fsread3, pname ) ) then
-         xmsg = 'Could not open ' // dust_lu_1 // ' file'
-         call m3exit( pname, 0, 0, xmsg, xstat1 )
-      end if
-
-C Open the BELD3 file
-      if ( .not. open3( dust_lu_2, fsread3, pname ) ) then
-         xmsg = 'Could not open ' // dust_lu_2 // ' file'
-         call m3exit( pname, 0, 0, xmsg, xstat1 )
-      end if
 
 C Get domain window info
-      call subhfile ( dust_lu_1, gxoff, gyoff,
-     &                strtcol_01, endcol_01, strtrow_01, endrow_01 )
+      call subhfile ( grid_cro_2d, gxoff, gyoff,
+     &     strtcol_01, endcol_01, strtrow_01, endrow_01 )
 
-      call subhfile ( dust_lu_2, gxoff, gyoff,
-     &                strtcol_02, endcol_02, strtrow_02, endrow_02 )
-
-C Get landuse (fraction) data
-!     do i = 1, nlutyp-2   ! dust_lu_1
-      do i = 1, nlutyp-1   ! dust_lu_1
-         if ( .not. xtract3( dust_lu_1, vnmld( i ), 1,1,
-     &                       strtrow_01,endrow_01, strtcol_01,endcol_01,
-     &                       0, 0, lut( 1,1,i ) ) ) then
-            xmsg = 'Could not read ' // trim( vnmld( i ) ) // ' from DUST_LU_1'
-            call m3exit ( pname, 0, 0, xmsg, xstat1 )
+C Get desert land (fraction) data
+      do i = 1, nusgs
+         write(vnmld_usgs,'(A,I0.2)') 'LUFRAC_',i
+         if ( .not. interpx( grid_cro_2d, vnmld_usgs, pname,
+     &        strtcol_01,endcol_01, strtrow_01,endrow_01, 1,1,
+     &        jdate, jtime, lut ) ) then
+            xmsg = 'Could not read ' // trim( vnmld( i ) ) // ' from GRIDCRO2D file'
+            call m3exit( pname, jdate, jtime, xmsg, xstat1 )
          end if
+         j = id_usgs(i)
+         do r = 1, my_nrows
+            do c = 1, my_ncols
+               uland( c,r,j ) = uland( c,r,j ) + lut( c,r)
+            end do
+         end do
       end do
 
-!     do i = nlutyp-1, nlutyp   ! dust_lu_2
-      do i = nlutyp, nlutyp   ! dust_lu_2
-         if ( .not. xtract3( dust_lu_2, vnmld( i ), 1,1,
-     &                       strtrow_02,endrow_02, strtcol_02,endcol_02,
-     &                       0, 0, lut( 1,1,i ) ) ) then
-           xmsg = 'Could not read ' // trim( vnmld( i ) ) // ' from DUST_LU_2'
-           call m3exit ( pname, 0, 0, xmsg, xstat1 )
-         end if
-      end do
 
 C Merge fractional BELD landuse types into 4 categories for dust removal
       do r = 1, my_nrows
       do c = 1, my_ncols
-         uland( c,r,1 ) = lut( c,r,7 )  + lut( c,r,14 )  ! water & barren surrounding
-     &                  + lut( c,r,16 ) + lut( c,r,18 )
-     &                  + lut( c,r,19 )
-         uland( c,r,2 ) = lut( c,r,6 )  + lut( c,r,8 )   ! grass surrounding
-     &                  + lut( c,r,9 )  + lut( c,r,17 )
-     &                  + lut( c,r,2 )  + lut( c,r,3 )   ! crop surrounding
-     &                  + lut( c,r,4 )  + lut( c,r,5 )
-!    &                  + lut( c,r,20 )
-         uland( c,r,3 ) = lut( c,r,1 )                   ! building surrounding
-         uland( c,r,4 ) = lut( c,r,10 ) + lut( c,r,11 )  ! forest surrounding
-     &                  + lut( c,r,12 ) + lut( c,r,13 )
-!    &                  + lut( c,r,15 ) + lut( c,r,21 )
-     &                  + lut( c,r,15 ) + lut( c,r,20 )
 
          tland = 0.0
          do i = 1, 4
-            uland( c,r,i ) = max( 0.0, min( 100.0, uland( c,r,i ) ) )
+            uland( c,r,i ) = max( 0.0, min( 1.0, uland( c,r,i ) ) )
             tland = tland + uland( c,r,i )
          end do
 
-         if ( tland .gt. 100.0 ) then
+         if ( tland .gt. 1.0 ) then
             do i = 1, 4
-               uland( c,r,i ) = uland( c,r,i ) * 100.0 / tland
+               uland( c,r,i ) = uland( c,r,i ) * 1.0 / tland
             end do
          end if
 
@@ -226,11 +193,9 @@ C Merge fractional BELD landuse types into 4 categories for dust removal
 
          ufc = 0.0
          do i = 1, 4
-!           ufc = ufc + fw( i ) * uland( c,r,i ) * 0.01
             ufc = ufc + fw( i ) * uland( c,r,i )
          end do
-!        tfb( c,r ) = 1.0 - ufc
-         tfb( c,r ) = 1.0 - ufc * 0.01
+         tfb( c,r ) = 1.0 - ufc
 
          if ( tfb( c,r ) .gt. 1.0 .or. tfb( c,r ) .lt. 0.0 ) then
             write( xmsg,'( a, e10.3, a, 2i4 )' ) 'Transport factor error: ',

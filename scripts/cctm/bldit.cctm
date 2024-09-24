@@ -50,7 +50,10 @@
 
 #> user choices: base working directory, application string
  set Base = $cwd
- set APPL  = D502a
+ #set APPL  = D502a_cb05tucl_ae6_aq
+ #set APPL  = D502a_RN
+ #set APPL  = D502a_CO2
+ set APPL  = CH4only
  set MODEL = CCTM_${APPL}_$EXEC_ID
  set CFG   = cfg.$MODEL
 
@@ -114,8 +117,9 @@ set ParOpt         # set for multiple PE's; comment out for single PE
  set ModVdiff  = vdiff/acm2
 #set ModVdiff  = vdiff/acm2_mp
 
- set ModDepv   = depv/m3dry
+# set ModDepv   = depv/m3dry
 #set ModDepv   = depv/m3dry_mp
+set ModDepv   = depv/blank
 
 set ModEmis   = emis/emis
 
@@ -124,26 +128,31 @@ set ModEmis   = emis/emis
  set ModPlmrs  = plrise/smoke
 
  set ModCgrds  = spcs/cgrid_spcs_nml
-#set ModCgrds  = spcs/cgrid_spcs_icl
+# set ModCgrds  = spcs/cgrid_spcs_icl
 
  set ModPhot   = phot/phot_inline
 #set ModPhot   = phot/phot_table
 
 #set ModGas    = gas/smvgear
 #set ModGas    = gas/ros3
-#set ModGas    = gas/ebi_cb05cl
-set ModGas    = gas/ebi_cb05tucl
+# set ModGas    = gas/CH4only
+# set ModGas    = gas/ebi_cb05tucl
+#set ModGas    = gas/ebi_cb05tucl_RN2
+set ModGas    = gas/blank
 #set ModGas    = gas/ebi_cb05tump
 #set ModGas    = gas/ebi_saprc99
 #set ModGas    = gas/ebi_saprc07tb
 #set ModGas    = gas/ebi_saprc07tc
 
-#set ModAero   = aero/aero5
- set ModAero   = aero/aero6
+# set ModAero   = aero/aero5
+# set ModAero   = aero/aero6
+# set ModAero   = aero/blank
+ set ModAero   = aero/aero_noop
 #set ModAero   = aero/aero6_mp
 
 #set ModCloud  = cloud/cloud_acm_ae5
-set ModCloud  = cloud/cloud_acm_ae6
+#set ModCloud  = cloud/cloud_acm_ae6
+ set ModCloud  = cloud/blank
 #set ModCloud  = cloud/cloud_acm_ae6_mp
 
  set ModPa     = procan/pa
@@ -152,8 +161,11 @@ set ModCloud  = cloud/cloud_acm_ae6
 
 #> user choices: mechanism
 #set Mechanism = cb05cl_ae5_aq
-#set Mechanism = cb05tucl_ae5_aq
-set Mechanism = cb05tucl_ae6_aq
+# set Mechanism = cb05tucl_ae6_aq
+# set Mechanism = cb05tucl_ae6_aq_RN2
+#set Mechanism = CO2only
+ set Mechanism = CH4only
+#set Mechanism = racm2_ae6_aq
 #set Mechanism = trac1
 #set Mechanism = cb05tump_ae6_aq
 #set Mechanism = saprc99_ae5_aq
@@ -179,13 +191,14 @@ set Mechanism = cb05tucl_ae6_aq
  set Blder = $M3LIB/bldmake
 
 #> Set location of libraries/include files
- set LIOAPI  = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext} -lioapi"
- set IOAPIMOD = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext}"
+ set LIOAPI  = "${M3HOME}/lib/ioapi-3.1/${EXEC_ID} -lioapi"
+ set IOAPIMOD = "${M3HOME}/lib/ioapi-3.1/${EXEC_ID}"
 echo LIOAPI $LIOAPI
 echo IOAPIMOD $IOAPIMOD
 
 # set NETCDF = "${M3HOME}/lib/ioapi-3.1/Linux2_${system}${compiler_ext} -lnetcdf"
- set NETCDF = "/home/563/jds563/.local/lib -lnetcdf  -lnetcdff"
+# set NETCDF = "${NETCDF_BASE}/lib -lnetcdf -L${NETCDF_BASE}/lib/Intel -lnetcdff"
+ set NETCDF = "`nf-config --flibs`"
 
  if ( $?ParOpt ) then      # Multiprocessor system configuration
     set PARIO = ${M3LIB}/pario
@@ -201,7 +214,7 @@ echo IOAPIMOD $IOAPIMOD
  set F90_FLAGS  = "${myFRFLAGS} -I ${IOAPIMOD} -I ${PARIO} -I ${STENEX} -I ${MPI_INC} -I."
  set CPP_FLAGS  = ""
  set C_FLAGS    = "${myCFLAGS} -DFLDMN -I ${MPI_INC}"
- set LINK_FLAGS = "${myLINK_FLAG} -lpthread -openmp"
+ set LINK_FLAGS = "${myLINK_FLAG} -fopenmp"
 
 #:#:#:#:#:#:#:#:#:#:#:# End of User Input Section :#:#:#:#:#:#:#:#:#:#:#:#:#
 
@@ -210,6 +223,7 @@ echo IOAPIMOD $IOAPIMOD
     set LIB2 = "-L${M3LIB}/pario -lpario"
     set LIB3 = 
     set LIB4 = "-L${M3HOME}/lib/mpich/lib ${mpi} ${extra_lib}"
+    set LIB4 = 
     set Str1 = (// Parallel / Include message passing definitions)
     set Str2 = (include SUBST_MPI ${MPI_INC}/mpif.h;)
  else
@@ -223,8 +237,8 @@ echo IOAPIMOD $IOAPIMOD
 
  set LIB1 = "-L${STENEX} -l${seL}"
  set LIB5 = "-L${LIOAPI}"
- set LIB6 = "-L${NETCDF}"
- set LIB7 = "-L/home/563/jds563/programs/pvm3/lib/LINUX64 -lpvm3 -lfpvm3"
+ set LIB6 = "${NETCDF}"
+ set LIB7 = ""
 
  set LIBS = "$LIB1 $LIB2 $LIB3 $LIB4 $LIB5 $LIB6 $LIB7"
  
@@ -424,17 +438,20 @@ echo IOAPIMOD $IOAPIMOD
  echo "Module ${ModPhot};"                                         >> $Cfile
  echo                                                              >> $Cfile
 
- set text = "smvgear, ros3, ebi_cb05cl, ebi_cb05tucl, ebi_cb05tump, ebi_saprc99, ebi_saprc07tb, and ebi_saprc07tc"
+ #set text = "smvgear, ros3, ebi_cb05cl, ebi_cb05tucl, ebi_cb05tump, ebi_saprc99, ebi_saprc07tb, and ebi_saprc07tc"
+ set text = "blank"
  echo "// options are" $text                                       >> $Cfile
  echo "Module ${ModGas};"                                          >> $Cfile
  echo                                                              >> $Cfile
 
- set text = "aero5, aero6, and aero6_mp"
+ #set text = "aero5, aero6, and aero6_mp"
+ set text = "blank"
  echo "// options are" $text                                       >> $Cfile
  echo "Module ${ModAero};"                                         >> $Cfile
  echo                                                              >> $Cfile
 
- set text = "cloud_acm_ae5, cloud_acm_ae6, and cloud_acm_ae6_mp"
+ #set text = "cloud_acm_ae5, cloud_acm_ae6, and cloud_acm_ae6_mp"
+ set text = "blank"
  echo "// options are" $text                                       >> $Cfile
  echo "Module ${ModCloud};"                                        >> $Cfile
  echo                                                              >> $Cfile
