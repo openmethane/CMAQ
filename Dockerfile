@@ -44,11 +44,11 @@ cd $M3HOME/STENEX/se
 make -f makefile.gcc
 EOT
 
-COPY scripts/config.cmaq $M3LIB/config.cmaq
+COPY scripts/config.cmaq /opt/scripts/config.cmaq
 COPY models/BLDMAKE /opt/cmaq/models/BLDMAKE
-COPY scripts/build/bldit.bldmake $M3LIB/BLDMAKE/bldit.bldmake
+COPY scripts/build/bldit.bldmake /opt/scripts/BLDMAKE/bldit.bldmake
 RUN <<EOT
-cd $M3LIB/BLDMAKE
+cd /opt/scripts/BLDMAKE
 ./bldit.bldmake
 EOT
 
@@ -60,6 +60,8 @@ LABEL org.opencontainers.image.description="Community Multiscale Air Quality Mod
 LABEL org.opencontainers.image.vendor="The Superpower Institute"
 
 ENV CMAQ_VERSION="5.0.2"
+ENV M3HOME=/opt/cmaq
+ENV M3LIB=/opt/lib
 
 COPY --from=builder /opt/cmaq /opt/cmaq
 COPY --from=builder /opt/lib /opt/lib
