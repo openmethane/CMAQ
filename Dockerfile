@@ -28,8 +28,8 @@ ENV IOAPI_DIR=$M3LIB/ioapi_3.1
 WORKDIR /opt/cmaq
 
 # Build ioapi
-COPY libs/ioapi /opt/ioapi
-RUN /opt/ioapi/build_ioapi.sh
+COPY scripts/ioapi /opt/scripts/ioapi
+RUN /opt/scripts/ioapi/build_ioapi.sh
 
 # Build libraries and tools
 COPY models/PARIO $M3HOME/PARIO
