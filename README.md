@@ -1,5 +1,10 @@
-CMAQ
-====
+**Note:** this repository is a fork of U.S. EPA
+[CMAQ 5.0.2](https://github.com/USEPA/CMAQ/tree/5.0.2).
+
+Changes are limited to bug fixes and updates to build scripts to make it easier
+to build the project in a modern linux / docker environment.
+
+# CMAQ
 
 Community Multiscale Air Quality Model version 5.0.2 (April 2014)
 
