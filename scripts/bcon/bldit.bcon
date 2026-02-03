@@ -112,13 +112,9 @@
 #> Set location of M3Bld executable
  set Blder = $M3LIB/bldmake
 
-#> Set location of libraries/include files
- set IOAPI  = "${M3LIB}/ioapi_3.1/${EXEC_ID} -lioapi"
- set IOAPIMOD = ${M3LIB}/ioapi_3.1/${EXEC_ID}
-
 #> Set compiler flags
- set F_FLAGS    = "${myFFLAGS} -I ${IOAPIMOD} -I."
- set F90_FLAGS  = "${myFRFLAGS} -I ${IOAPIMOD} -I."
+ set F_FLAGS    = "${myFFLAGS} -I ${IOAPI_MOD} -I."
+ set F90_FLAGS  = "${myFRFLAGS} -I ${IOAPI_MOD} -I."
  set CPP_FLAGS  = ""
  set C_FLAGS    = "${myCFLAGS} -DFLDMN"
  set LINK_FLAGS = "${myLINK_FLAG}"
@@ -141,7 +137,7 @@
  set Str1 =
  set Str2 =
 
- set LIB1 = "-L${IOAPI}"
+ set LIB1 = "${IOAPI_LIB}"
  set LIB2 = "${NETCDF_LIB}"
  set LIBS = "$LIB1 $LIB2 ${extra_lib}"
 

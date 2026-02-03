@@ -98,9 +98,18 @@ if (! $?M3LIB) then
 endif
 if ( ! -d $M3LIB ) mkdir -p $M3LIB
 
-setenv MPI_INC # not needed when libmpich-dev installed via apt
-setenv NETCDF_LIB "`nf-config --flibs`"
+if (! $?IOAPI_DIR) then
+  setenv IOAPI_DIR $M3LIB/ioapi_3.1
+endif
 
 #> set executable id
- setenv EXEC_ID ${bld_os}_${system}${compiler_ext}
+setenv EXEC_ID ${bld_os}_${system}${compiler_ext}
+
+#> Set location of libraries/include files
+setenv MPI_INC "." # not needed when libmpich-dev installed via apt
+setenv IOAPI_LIB "-L${IOAPI_DIR}/${EXEC_ID} -lioapi"
+setenv IOAPI_MOD "${IOAPI_DIR}/${EXEC_ID}"
+setenv NETCDF_LIB "`nf-config --flibs`"
+setenv STENEX_MOD "${M3LIB}/stenex/se_gcc8.3.0"
+
 # unset echo
