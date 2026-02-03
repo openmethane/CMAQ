@@ -44,6 +44,14 @@ cd $M3HOME/STENEX/se
 make -f makefile.gcc
 EOT
 
+COPY scripts/config.cmaq $M3LIB/config.cmaq
+COPY models/BLDMAKE /opt/cmaq/models/BLDMAKE
+COPY scripts/build/bldit.bldmake $M3LIB/BLDMAKE/bldit.bldmake
+RUN <<EOT
+cd $M3LIB/BLDMAKE
+./bldit.bldmake
+EOT
+
 # Final image without extra packages for the runtime environment
 FROM debian:bookworm-slim
 

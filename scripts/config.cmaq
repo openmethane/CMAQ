@@ -13,7 +13,9 @@
 #> sourced from bldit.<model>
 
 #> model repository location
- setenv M3HOME /nas01/apps/CMAQv5.0.2
+if (! $?M3HOME) then
+  setenv M3HOME /opt/cmaq
+endif
  setenv M3MODEL ${M3HOME}/models
  setenv M3DATA  ${M3HOME}/data
 
@@ -23,11 +25,11 @@
 #-------------------------------------------------------------------------------
 
 #> set the COMPILER
-  setenv COMPILER intel
+# setenv COMPILER intel
 # setenv COMPILER pgi
-# setenv COMPILER gcc
+ setenv COMPILER gcc
 
- setenv system "`/bin/uname -i`"
+ setenv system "`/bin/uname -m`"
  setenv bld_os "`/bin/uname -s``/bin/uname -r | cut -d. -f1`"
  setenv lib_basedir $M3HOME/lib
 ######## set these extra library paths only if needed for your architecture 
@@ -75,11 +77,10 @@ setenv extra_lib
        setenv myFC mpif90 #gfortran
        setenv myCC gcc
        setenv myLINK_FLAG ""
-       setenv myFFLAGS "-ffixed-form -ffixed-line-length-132 -O3 -funroll-loops -finit-character=32"
-       setenv myFRFLAGS "-ffree-form -ffree-line-length-none -O3 -funroll-loops -finit-character=32"
-       setenv myCFLAGS "-O2"
-       setenv extra_lib
-       setenv extra_lib "$extra_lib -lgomp"
+       setenv myFFLAGS "-ffixed-form -ffixed-line-length-132 -g -O2 -fbacktrace -fallow-argument-mismatch -funroll-loops -finit-character=32"
+       setenv myFRFLAGS "-ffree-form -ffree-line-length-none -g -O2 -fbacktrace -fallow-argument-mismatch -funroll-loops -finit-character=32"
+       setenv myCFLAGS "-g -O2 -fbacktrace"
+       setenv extra_lib $extra_lib
        breaksw
 
     default:
@@ -92,10 +93,12 @@ setenv extra_lib
 #===============================================================================
 
 #> generate library locations
-       setenv M3LIB ${lib_basedir}/${system}/${compiler}
+if (! $?M3LIB) then
+  setenv M3LIB /opt/lib
+endif
        if ( ! -d $M3LIB ) mkdir -p $M3LIB
-       setenv MPI_INC $M3LIB/mpich/include
+#       setenv MPI_INC $M3LIB/mpich/include
 
 #> set executable id
- setenv EXEC_ID ${bld_os}_${system}${compiler}
+ setenv EXEC_ID ${bld_os}_${system}${compiler_ext}
 # unset echo
