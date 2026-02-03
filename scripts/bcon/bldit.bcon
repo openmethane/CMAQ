@@ -113,10 +113,8 @@
  set Blder = $M3LIB/bldmake
 
 #> Set location of libraries/include files
- set IOAPI  = "${M3LIB}/ioapi_3.1/Linux2_${system}${compiler_ext} -lioapi"
- set IOAPIMOD = ${M3LIB}/ioapi_3.1/Linux2_${system}${compiler_ext}
-
- set NETCDF = "${M3LIB}/netcdf/lib -lnetcdf"
+ set IOAPI  = "${M3LIB}/ioapi_3.1/${EXEC_ID} -lioapi"
+ set IOAPIMOD = ${M3LIB}/ioapi_3.1/${EXEC_ID}
 
 #> Set compiler flags
  set F_FLAGS    = "${myFFLAGS} -I ${IOAPIMOD} -I."
@@ -144,7 +142,7 @@
  set Str2 =
 
  set LIB1 = "-L${IOAPI}"
- set LIB2 = "-L${NETCDF}"
+ set LIB2 = "${NETCDF_LIB}"
  set LIBS = "$LIB1 $LIB2 ${extra_lib}"
 
  source $Base/relinc.bcon

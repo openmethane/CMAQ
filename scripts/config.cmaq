@@ -96,8 +96,10 @@ setenv extra_lib
 if (! $?M3LIB) then
   setenv M3LIB /opt/lib
 endif
-       if ( ! -d $M3LIB ) mkdir -p $M3LIB
-#       setenv MPI_INC $M3LIB/mpich/include
+if ( ! -d $M3LIB ) mkdir -p $M3LIB
+
+setenv MPI_INC # not needed when libmpich-dev installed via apt
+setenv NETCDF_LIB "`nf-config --flibs`"
 
 #> set executable id
  setenv EXEC_ID ${bld_os}_${system}${compiler_ext}

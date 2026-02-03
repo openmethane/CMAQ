@@ -112,10 +112,8 @@
  set Blder = $M3LIB/bldmake
 
 #> Set location of libraries/include files
- set IOAPI  = "${M3LIB}/ioapi_3.1/Linux2_${system}${compiler_ext} -lioapi"
- set IOAPIMOD = ${M3LIB}/ioapi_3.1/Linux2_${system}${compiler_ext}
-
- set NETCDF = "${M3LIB}/netcdf/lib -lnetcdf"
+ set IOAPI  = "${M3LIB}/ioapi_3.1/${EXEC_ID} -lioapi"
+ set IOAPIMOD = ${M3LIB}/ioapi_3.1/${EXEC_ID}
 
  set PARMOD = "."
  set STENEX = "."
@@ -151,7 +149,7 @@
  set STX  = 
 
  set LIB4 = "-L${IOAPI}"
- set LIB5 = "-L${NETCDF}"
+ set LIB5 = "${NETCDF_LIB}"
  set LIBS = "$LIB1 $LIB2 $LIB3 $LIB4 $LIB5 ${extra_lib}"
 
  source $Base/relinc.icon
@@ -191,7 +189,7 @@
  echo "// model repository: ${M3MODEL}"                            >> $Cfile
  echo                                                              >> $Cfile
 
-if ( $compiler == gfort ) then 
+if ( $compiler_ext == gfort ) then
    set ICL_MECH = '.'
 endif
  echo "include SUBST_RXCMMN     $ICL_MECH/RXCM.EXT;"               >> $Cfile

@@ -52,6 +52,21 @@ cd /opt/scripts/BLDMAKE
 ./bldit.bldmake
 EOT
 
+COPY models/CCTM /opt/cmaq/models/CCTM
+COPY models/BCON /opt/cmaq/models/BCON
+COPY scripts/bcon /opt/scripts/bcon
+RUN <<EOT
+cd /opt/scripts/bcon
+./bldit.bcon
+EOT
+
+COPY models/ICON /opt/cmaq/models/ICON
+COPY scripts/icon /opt/scripts/icon
+RUN <<EOT
+cd /opt/scripts/icon
+./bldit.icon
+EOT
+
 # Final image without extra packages for the runtime environment
 FROM debian:bookworm-slim
 
