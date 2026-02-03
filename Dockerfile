@@ -67,6 +67,12 @@ cd /opt/scripts/icon
 ./bldit.icon
 EOT
 
+COPY scripts/mcip /opt/scripts/mcip
+RUN <<EOT
+cd /opt/scripts/mcip
+./build_mcip.sh
+EOT
+
 # Final image without extra packages for the runtime environment
 FROM debian:bookworm-slim
 

@@ -110,6 +110,7 @@ setenv MPI_INC "." # not needed when libmpich-dev installed via apt
 setenv IOAPI_LIB "-L${IOAPI_DIR}/${EXEC_ID} -lioapi"
 setenv IOAPI_MOD "${IOAPI_DIR}/${EXEC_ID}"
 setenv NETCDF_LIB "`nf-config --flibs`"
+setenv NETCDF_MOD "`nf-config --fflags`"
 setenv STENEX_MOD "${M3LIB}/stenex/se_gcc8.3.0"
 
 # unset echo
