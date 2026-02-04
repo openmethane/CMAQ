@@ -85,6 +85,7 @@ ENV CMAQ_VERSION="5.0.2"
 ENV M3HOME=/opt/cmaq
 ENV M3LIB=/opt/lib
 
+COPY --from=builder /opt/scripts/config.cmaq /opt/scripts/config.cmaq
 COPY --from=builder /opt/cmaq /opt/cmaq
 COPY --from=builder /opt/lib /opt/lib
 
