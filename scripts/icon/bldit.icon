@@ -237,7 +237,19 @@ endif
     else
        $Blder $Cfile
     endif
+
+    if ( ! -e "$Bld/$MODEL" ) then
+       echo "   *** failure in $Blder, $Bld/$MODEL not created ***"
+       exit 1
+    endif
+
+    #> If $BIN_DIR is set, move compiled binaries there
+    if ( $?BIN_DIR ) then
+       echo "Moving $MODEL to $BIN_DIR"
+       mv $Bld/$MODEL $BIN_DIR
+    endif
  endif
+
  mv Makefile $Bld/Makefile.$COMPILER
  if ( -e $Bld/Makefile.$COMPILER && -e $Bld/Makefile ) rm $Bld/Makefile
  ln -s $Bld/Makefile.$COMPILER $Bld/Makefile
@@ -252,23 +264,4 @@ endif
  endif
  mv ${CFG}.bld $Bld/${CFG}
 
- set is_using_git = `ls -alog $M3MODEL | grep git | wc -l`
-
- if ( $is_using_git[1] ) then
-#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#
- cd $M3MODEL
-#set brnch = `git --work-tree=$M3MODEL branch`
- set brnch = `git branch`
- @ i = 0
- while ( $i < $#brnch )
-    @ i++
-    if ( "$brnch[$i]" == "*" ) @ l = $i + 1
- end
-#set rep = `echo $M3MODEL | tr "/" "#"`
- set rep = `echo $cwd | tr "/" "#"`
- set rln = "repo:${rep},branch:${brnch[$l]},compiler:${COMPILER}"
- set ref = $Bld/$rln
- /bin/touch $ref
- if ( -d $M3MODEL/branch ) /bin/cp $M3MODEL/branch/branch.* $Bld
-endif
  exit

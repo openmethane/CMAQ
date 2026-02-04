@@ -40,4 +40,11 @@ make
     exit 1
  endif
 
+
+#> If $BIN_DIR is set, move compiled binaries there
+if ( $?BIN_DIR ) then
+  echo "Moving mcip.exe to $BIN_DIR"
+  mv mcip.exe $BIN_DIR
+endif
+
  exit

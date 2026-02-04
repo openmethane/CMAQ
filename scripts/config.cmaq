@@ -113,4 +113,9 @@ setenv NETCDF_LIB "`nf-config --flibs`"
 setenv NETCDF_MOD "`nf-config --fflags`"
 setenv STENEX_MOD "${M3LIB}/stenex/se_gcc8.3.0"
 
+#> If $BIN_DIR is set, compiled binaries will be placed there
+if ( $?BIN_DIR ) then
+  if ( ! -d $BIN_DIR ) mkdir -p "$BIN_DIR"
+endif
+
 # unset echo

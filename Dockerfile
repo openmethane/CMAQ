@@ -24,6 +24,7 @@ EOT
 ENV M3HOME=/opt/cmaq
 ENV M3LIB=/opt/lib
 ENV IOAPI_DIR=$M3LIB/ioapi_3.1
+ENV BIN_DIR=/opt/cmaq/bin
 
 WORKDIR /opt/cmaq
 
