@@ -52,7 +52,7 @@
  set Base = $cwd
  set APPL  = D502a
  set CFG   = cfg.$APPL
- set MODEL = BCON_${APPL}_$EXEC_ID
+ set MODEL = BCON
 
 #set Local   # do NOT copy the source files into the BLD directory -
              # comment out to copy the source files (default if not set)
