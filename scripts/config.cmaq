@@ -75,11 +75,11 @@ setenv extra_lib
        setenv compiler gcc
        setenv compiler_ext gfort
        setenv myFC mpif90 #gfortran
-       setenv myCC gcc
+       setenv myCC mpicc
        setenv myLINK_FLAG ""
        setenv myFFLAGS "-ffixed-form -ffixed-line-length-132 -g -O2 -fbacktrace -fallow-argument-mismatch -funroll-loops -finit-character=32"
        setenv myFRFLAGS "-ffree-form -ffree-line-length-none -g -O2 -fbacktrace -fallow-argument-mismatch -funroll-loops -finit-character=32"
-       setenv myCFLAGS "-g -O2 -fbacktrace"
+       setenv myCFLAGS "-g -O2"
        setenv extra_lib $extra_lib
        breaksw
 

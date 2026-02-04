@@ -12,7 +12,7 @@
 # Use "-Wall -Wsurprising" for full diagnostics.
 
 AR   = ar
-CC   = gcc
+CC   = mpicc
 FC   = gfortran
 M4   = m4
 LINK = $(CC)
