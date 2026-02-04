@@ -111,6 +111,8 @@ setenv IOAPI_LIB "-L${IOAPI_DIR}/${EXEC_ID} -lioapi"
 setenv IOAPI_MOD "${IOAPI_DIR}/${EXEC_ID}"
 setenv NETCDF_LIB "`nf-config --flibs`"
 setenv NETCDF_MOD "`nf-config --fflags`"
+setenv PARIO_LIB "${M3LIB}/pario -lpario"
+setenv STENEX_LIB "${M3LIB}/stenex/se_gcc8.3.0"
 setenv STENEX_MOD "${M3LIB}/stenex/se_gcc8.3.0"
 
 #> If $BIN_DIR is set, compiled binaries will be placed there
