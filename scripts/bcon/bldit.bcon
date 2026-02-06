@@ -52,7 +52,7 @@
  set Base = $cwd
  set APPL  = D502a
  set CFG   = cfg.$APPL
- set MODEL = BCON_${APPL}_$EXEC_ID
+ set MODEL = BCON
 
 #set Local   # do NOT copy the source files into the BLD directory -
              # comment out to copy the source files (default if not set)
@@ -112,15 +112,9 @@
 #> Set location of M3Bld executable
  set Blder = $M3LIB/bldmake
 
-#> Set location of libraries/include files
- set IOAPI  = "${M3LIB}/ioapi_3.1/Linux2_${system}${compiler_ext} -lioapi"
- set IOAPIMOD = ${M3LIB}/ioapi_3.1/Linux2_${system}${compiler_ext}
-
- set NETCDF = "${M3LIB}/netcdf/lib -lnetcdf"
-
 #> Set compiler flags
- set F_FLAGS    = "${myFFLAGS} -I ${IOAPIMOD} -I."
- set F90_FLAGS  = "${myFRFLAGS} -I ${IOAPIMOD} -I."
+ set F_FLAGS    = "${myFFLAGS} -I ${IOAPI_MOD} -I."
+ set F90_FLAGS  = "${myFRFLAGS} -I ${IOAPI_MOD} -I."
  set CPP_FLAGS  = ""
  set C_FLAGS    = "${myCFLAGS} -DFLDMN"
  set LINK_FLAGS = "${myLINK_FLAG}"
@@ -143,8 +137,8 @@
  set Str1 =
  set Str2 =
 
- set LIB1 = "-L${IOAPI}"
- set LIB2 = "-L${NETCDF}"
+ set LIB1 = "${IOAPI_LIB}"
+ set LIB2 = "${NETCDF_LIB}"
  set LIBS = "$LIB1 $LIB2 ${extra_lib}"
 
  source $Base/relinc.bcon
@@ -231,6 +225,17 @@
     else
        $Blder $Cfile
     endif
+
+    if ( ! -e "$Bld/$MODEL" ) then
+       echo "   *** failure in $Blder, $Bld/$MODEL not created ***"
+       exit 1
+    endif
+
+    #> If $BIN_DIR is set, move compiled binaries there
+    if ( $?BIN_DIR ) then
+       echo "Moving $MODEL to $BIN_DIR"
+       mv $Bld/$MODEL $BIN_DIR
+    endif
  endif
 
  mv Makefile $Bld/Makefile.$COMPILER
@@ -246,25 +251,5 @@
     mv $Base/${CFG} $Base/${CFG}.old
  endif
  mv ${CFG}.bld $Bld/${CFG}
-
- set is_using_git = `ls -alog $M3MODEL | grep git | wc -l`
-
- if ( $is_using_git[1] ) then
-#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#
- cd $M3MODEL
-#set brnch = `git --work-tree=$M3MODEL branch`
- set brnch = `git branch`
- @ i = 0
- while ( $i < $#brnch )
-    @ i++
-    if ( "$brnch[$i]" == "*" ) @ l = $i + 1
- end
-#set rep = `echo $M3MODEL | tr "/" "#"`
- set rep = `echo $cwd | tr "/" "#"`
- set rln = "repo:${rep},branch:${brnch[$l]},compiler:${COMPILER}"
- set ref = $Bld/$rln
- /bin/touch $ref
- if ( -d $M3MODEL/branch ) /bin/cp $M3MODEL/branch/branch.* $Bld
-endif
 
  exit

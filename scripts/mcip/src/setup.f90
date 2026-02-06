@@ -128,12 +128,13 @@ SUBROUTINE setup (ctmlays)
         WRITE (*,f9300) TRIM(pname), 'TITLE', TRIM(nf90_strerror(rcode))
         CALL graceful_stop (pname)
       ENDIF
-      IF ( wrfversion(18:19) == "V3" ) THEN
-        met_iversion = 2  ! NCAR only supports mass core in WRFv3 and beyond
-      ELSE
-        WRITE (*,f9400) TRIM(pname), TRIM(wrfversion)
-        CALL graceful_stop (pname)
-      ENDIF
+      met_iversion = 2  ! NCAR only supports mass core in WRFv3 and beyond
+      ! IF ( wrfversion(18:19) == "V3" ) THEN
+      !   met_iversion = 2  ! NCAR only supports mass core in WRFv3 and beyond
+      ! ELSE
+      !   WRITE (*,f9400) TRIM(pname), TRIM(wrfversion)
+      !   CALL graceful_stop (pname)
+      ! ENDIF
     ENDIF
 
     rcode = nf90_get_att (cdfid, nf90_global, 'GRIDTYPE', gridtype)

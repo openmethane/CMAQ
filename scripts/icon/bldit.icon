@@ -52,7 +52,7 @@
  set Base = $cwd
  set APPL  = D502a
  set CFG   = cfg.$APPL
- set MODEL = ICON_${APPL}_$EXEC_ID
+ set MODEL = ICON
 
 #set Local   # do NOT copy the source files into the BLD directory -
              # comment out to copy the source files (default if not set)
@@ -111,19 +111,11 @@
 #> Set location of M3Bld executable
  set Blder = $M3LIB/bldmake
 
-#> Set location of libraries/include files
- set IOAPI  = "${M3LIB}/ioapi_3.1/Linux2_${system}${compiler_ext} -lioapi"
- set IOAPIMOD = ${M3LIB}/ioapi_3.1/Linux2_${system}${compiler_ext}
-
- set NETCDF = "${M3LIB}/netcdf/lib -lnetcdf"
-
  set PARMOD = "."
- set STENEX = "."
- set MPI_INC = "."
-#
+
 #> Set compiler flags
- set F_FLAGS    = "${myFFLAGS} -I ${IOAPIMOD} -I ${PARMOD} -I ${STENEX} -I."
- set F90_FLAGS  = "${myFRFLAGS} -I ${IOAPIMOD} -I ${PARMOD} -I ${STENEX} -I."
+ set F_FLAGS    = "${myFFLAGS} -I ${IOAPI_MOD} -I ${PARMOD} -I ${STENEX_MOD} -I."
+ set F90_FLAGS  = "${myFRFLAGS} -I ${IOAPI_MOD} -I ${PARMOD} -I ${STENEX_MOD} -I."
  set CPP_FLAGS  = ""
  set C_FLAGS    = "${myCFLAGS} -DFLDMN -I ${MPI_INC}"
  set LINK_FLAGS = "${myLINK_FLAG}"
@@ -150,8 +142,8 @@
  set Str2 =
  set STX  = 
 
- set LIB4 = "-L${IOAPI}"
- set LIB5 = "-L${NETCDF}"
+ set LIB4 = "${IOAPI_LIB}"
+ set LIB5 = "${NETCDF_LIB}"
  set LIBS = "$LIB1 $LIB2 $LIB3 $LIB4 $LIB5 ${extra_lib}"
 
  source $Base/relinc.icon
@@ -191,7 +183,7 @@
  echo "// model repository: ${M3MODEL}"                            >> $Cfile
  echo                                                              >> $Cfile
 
-if ( $compiler == gfort ) then 
+if ( $compiler_ext == gfort ) then
    set ICL_MECH = '.'
 endif
  echo "include SUBST_RXCMMN     $ICL_MECH/RXCM.EXT;"               >> $Cfile
@@ -245,7 +237,19 @@ endif
     else
        $Blder $Cfile
     endif
+
+    if ( ! -e "$Bld/$MODEL" ) then
+       echo "   *** failure in $Blder, $Bld/$MODEL not created ***"
+       exit 1
+    endif
+
+    #> If $BIN_DIR is set, move compiled binaries there
+    if ( $?BIN_DIR ) then
+       echo "Moving $MODEL to $BIN_DIR"
+       mv $Bld/$MODEL $BIN_DIR
+    endif
  endif
+
  mv Makefile $Bld/Makefile.$COMPILER
  if ( -e $Bld/Makefile.$COMPILER && -e $Bld/Makefile ) rm $Bld/Makefile
  ln -s $Bld/Makefile.$COMPILER $Bld/Makefile
@@ -260,23 +264,4 @@ endif
  endif
  mv ${CFG}.bld $Bld/${CFG}
 
- set is_using_git = `ls -alog $M3MODEL | grep git | wc -l`
-
- if ( $is_using_git[1] ) then
-#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#:#
- cd $M3MODEL
-#set brnch = `git --work-tree=$M3MODEL branch`
- set brnch = `git branch`
- @ i = 0
- while ( $i < $#brnch )
-    @ i++
-    if ( "$brnch[$i]" == "*" ) @ l = $i + 1
- end
-#set rep = `echo $M3MODEL | tr "/" "#"`
- set rep = `echo $cwd | tr "/" "#"`
- set rln = "repo:${rep},branch:${brnch[$l]},compiler:${COMPILER}"
- set ref = $Bld/$rln
- /bin/touch $ref
- if ( -d $M3MODEL/branch ) /bin/cp $M3MODEL/branch/branch.* $Bld
-endif
  exit

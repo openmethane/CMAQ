@@ -20,9 +20,9 @@
 .SUFFIXES: .o .f90 .F90
 
 MODEL = mcip.exe
-NETCDF = /usr/local/netcdf
-IOAPI_ROOT = /usr/local/ioapi
-PVM = /usr/local/pvm3
+#NETCDF = /usr/local/netcdf
+#IOAPI_ROOT = /usr/local/ioapi
+#PVM = /usr/local/pvm3
 
 #...Portland Group Fortran
 #FC     = pgf90
