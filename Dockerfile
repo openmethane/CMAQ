@@ -96,8 +96,11 @@ rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 EOT
 
 ENV CMAQ_VERSION="5.0.2"
+ENV OPENMETHANE_CMAQ_VERSION="1.0.0"
+
 ENV M3HOME=/opt/cmaq
 ENV M3LIB=/opt/lib
+ENV BIN_DIR=/opt/cmaq/bin
 
 COPY --from=builder /opt/scripts/config.cmaq /opt/scripts/config.cmaq
 COPY --from=builder /opt/cmaq /opt/cmaq
