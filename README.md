@@ -1,8 +1,16 @@
-**Note:** this repository is a fork of U.S. EPA
+# Open Methane CMAQ
+
+Open Methane CMAQ is a fork of US EPA
 [CMAQ 5.0.2](https://github.com/USEPA/CMAQ/tree/5.0.2).
 
-Changes are limited to bug fixes and updates to build scripts to make it easier
-to build the project in a modern linux / docker environment.
+The primary science change is the introduction of the `CH4only` chemical
+mechanism in `models/CCTM/MECHS/CH4only`, and associated profiles in
+`models/BCON/prof_data` and `models/ICON/prof_data`.
+
+Other changes from the official CMAQ v5.0.2 release include:
+ - bug fixes
+ - support for newer file formats, ie WRFv4
+ - updates to build scripts to enable building and running in docker
 
 # CMAQ
 
