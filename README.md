@@ -12,6 +12,18 @@ Other changes from the official CMAQ v5.0.2 release include:
  - support for newer file formats, ie WRFv4
  - updates to build scripts to enable building and running in docker
 
+## License
+
+US EPA did not include a definitive LICENSE in the 5.0.2 release of CMAQ.
+However, the CMAQ v5.4 release (2019) includes an
+[MIT license](https://github.com/USEPA/CMAQ/blob/5.4/license.md. We have
+duplicated that license in a best effort to respect the intentions of the
+copyright owner.
+
+Where individual files in this repo include their own license in headers or
+comments, that license should be considered to apply to the file in place of
+the general license provided in the repository LICENSE file.
+
 # CMAQ
 
 Community Multiscale Air Quality Model version 5.0.2 (April 2014)
