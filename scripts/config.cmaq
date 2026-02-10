@@ -16,8 +16,9 @@
 if (! $?M3HOME) then
   setenv M3HOME /opt/cmaq
 endif
- setenv M3MODEL ${M3HOME}/models
- setenv M3DATA  ${M3HOME}/data
+
+setenv M3MODEL ${M3HOME}/models
+setenv M3DATA  ${M3HOME}/data
 
 #===============================================================================
 
@@ -25,71 +26,27 @@ endif
 #-------------------------------------------------------------------------------
 
 #> set the COMPILER
-# setenv COMPILER intel
-# setenv COMPILER pgi
- setenv COMPILER gcc
+setenv COMPILER gcc
 
- setenv system "`/bin/uname -m`"
- setenv bld_os "`/bin/uname -s``/bin/uname -r | cut -d. -f1`"
- setenv lib_basedir $M3HOME/lib
-######## set these extra library paths only if needed for your architecture 
-#setenv extra_lib "-openmp"
-#setenv extra_lib "-lrdmacm -libumad -lopa -lmpl -lrt -lpthread -libverbs -ldl"
-#setenv extra_lib "-lrdmacm -libumad "
+setenv system "`/bin/uname -m`"
+setenv bld_os "`/bin/uname -s``/bin/uname -r | cut -d. -f1`"
+setenv lib_basedir $M3HOME/lib
 setenv extra_lib
 
 ####### MPI libraries ########
 #use -lmpich for mvpich and -lmpi for openmpi
  setenv mpi "-lmpich"
-#setenv mpi "-lmpi"
 
- switch ( $COMPILER )
-    case intel:
-##> Intel fortran compiler......................................................
-       setenv compiler intel
-       setenv compiler_ext ifort
-       setenv myFC mpif90
-       setenv myCC mpicc
-       setenv myLINK_FLAG "-i-static"
-       setenv myFFLAGS "-fixed -132 -O3 -override-limits -fno-alias -mp1 -fp-model precise"
-       setenv myFRFLAGS "-free -O3 -fno-alias -mp1 -fp-model precise"
-       setenv myCFLAGS "-O2"
-       setenv extra_lib $extra_lib
-       breaksw
+##> binaries and flags for gfortran compiler
+setenv compiler gcc
+setenv compiler_ext gfort
+setenv myFC mpif90 #gfortran
+setenv myCC mpicc
+setenv myLINK_FLAG ""
+setenv myFFLAGS "-ffixed-form -ffixed-line-length-132 -g -O2 -fbacktrace -fallow-argument-mismatch -funroll-loops -finit-character=32"
+setenv myFRFLAGS "-ffree-form -ffree-line-length-none -g -O2 -fbacktrace -fallow-argument-mismatch -funroll-loops -finit-character=32"
+setenv myCFLAGS "-g -O2"
 
-    case pgi:
-##> Portland Group fortran compiler.............................................
-       setenv compiler pgi
-       setenv compiler_ext pg
-       setenv myFC mpif90
-       setenv myCC mpicc
-       setenv myLINK_FLAG ""
-       setenv myFFLAGS "-Mfixed -Mextend -O3"
-       setenv myFRFLAGS "-Mfree -O3"
-       setenv myCFLAGS "-O2"
-       setenv extra_lib $extra_lib
-       breaksw
-
-    case gcc:
-##> gfortran compiler......................................................
-       setenv compiler gcc
-       setenv compiler_ext gfort
-       setenv myFC mpif90 #gfortran
-       setenv myCC mpicc
-       setenv myLINK_FLAG ""
-       setenv myFFLAGS "-ffixed-form -ffixed-line-length-132 -g -O2 -fbacktrace -fallow-argument-mismatch -funroll-loops -finit-character=32"
-       setenv myFRFLAGS "-ffree-form -ffree-line-length-none -g -O2 -fbacktrace -fallow-argument-mismatch -funroll-loops -finit-character=32"
-       setenv myCFLAGS "-g -O2"
-       setenv extra_lib $extra_lib
-       breaksw
-
-    default:
-       echo "*** Compiler $COMPILER not found"
-       exit(2)
-       breaksw
-
- endsw
- 
 #===============================================================================
 
 #> generate library locations
@@ -119,5 +76,3 @@ setenv STENEX_MOD "${M3LIB}/stenex/se_gcc8.3.0"
 if ( $?BIN_DIR ) then
   if ( ! -d $BIN_DIR ) mkdir -p "$BIN_DIR"
 endif
-
-# unset echo
