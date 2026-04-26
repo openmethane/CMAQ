@@ -16,7 +16,7 @@ Other changes from the official CMAQ v5.0.2 release include:
 
 US EPA did not include a definitive LICENSE in the 5.0.2 release of CMAQ.
 However, the CMAQ v5.4 release (2019) includes an
-[MIT license](https://github.com/USEPA/CMAQ/blob/5.4/license.md. We have
+[MIT license](https://github.com/USEPA/CMAQ/blob/5.4/license.md). We have
 duplicated that license in a best effort to respect the intentions of the
 copyright owner.
 
