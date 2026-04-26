@@ -81,6 +81,20 @@ LABEL org.opencontainers.image.title="CMAQ"
 LABEL org.opencontainers.image.description="Community Multiscale Air Quality Model"
 LABEL org.opencontainers.image.vendor="The Superpower Institute"
 
+# Install runtime libraries needed for dynamically linked binaries
+RUN <<EOT
+apt-get update -qy
+apt-get install -qyy \
+    -o APT::Install-Recommends=false \
+    -o APT::Install-Suggests=false \
+    csh \
+    libnetcdff7 \
+    mpich
+
+apt-get clean
+rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+EOT
+
 ENV CMAQ_VERSION="5.0.2"
 ENV M3HOME=/opt/cmaq
 ENV M3LIB=/opt/lib
@@ -88,20 +102,6 @@ ENV M3LIB=/opt/lib
 COPY --from=builder /opt/scripts/config.cmaq /opt/scripts/config.cmaq
 COPY --from=builder /opt/cmaq /opt/cmaq
 COPY --from=builder /opt/lib /opt/lib
-
-RUN <<EOT
-apt-get update -qy
-apt-get install -qyy \
-    -o APT::Install-Recommends=false \
-    -o APT::Install-Suggests=false \
-    ca-certificates \
-    libnetcdff7 \
-    mpich \
-    wget
-
-apt-get clean
-rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-EOT
 
 WORKDIR /opt/cmaq
 

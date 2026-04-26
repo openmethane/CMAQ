@@ -50,15 +50,22 @@
 
 #> user choices: base working directory
  set Base = $cwd
+
+ #> mechanism must exist in models/CCTM/MECHS and models/BCON/prof_data
+ if ( ! $?MECH ) set MECH = "CH4only"
+
  set APPL  = D502a
  set CFG   = cfg.$APPL
- set MODEL = BCON
+ set MODEL = BCON_${MECH}
 
 #set Local   # do NOT copy the source files into the BLD directory -
              # comment out to copy the source files (default if not set)
 
 #> The "BLD" directory for checking out and compiling source code
- set Bld = $Base/BLD_${APPL}
+ set Bld = $Base/BCON_${MECH}
+#> If $BIN_DIR is set, output compiled build there
+ if ( $?BIN_DIR ) set Bld = $BIN_DIR/BCON_${MECH}
+
  if ( ! -e "$Bld" ) then
     mkdir $Bld
  else
@@ -83,14 +90,16 @@
 #set ModType   = m3conc
 #set ModType   = tracer
 
- set ModMech   = prof_data/cb05_ae6_aq
+ set ModMech   = prof_data/${MECH}
+#set ModMech   = prof_data/cb05_ae6_aq
 #set ModMech   = prof_data/saprc99_ae6_aq
 #set ModMech   = prof_data/saprc07t_ae6_aq
 
 #> user choices: mechanism
+ set Mechanism = ${MECH}
 #set Mechanism = cb05cl_ae5_aq
 #set Mechanism = cb05tucl_ae5_aq
- set Mechanism = cb05tucl_ae6_aq
+#set Mechanism = cb05tucl_ae6_aq
 #set Mechanism = cb05tump_ae6_aq
 #set Mechanism = saprc99_ae5_aq
 #set Mechanism = saprc99_ae6_aq
@@ -102,8 +111,6 @@
 #>    name of the "BLD" directory for checking out and compiling source code
 #>    compiler name and location/link flags
 #>    library paths
-
- set Bld = $Base/BLD_${APPL}
 
 #> Set full path of Fortran 90 compiler
  set FC = ${myFC}
@@ -177,7 +184,7 @@
  echo "$text ${Mechanism}"                                         >> $Cfile
  echo "// model repository: ${M3MODEL}"                            >> $Cfile
  echo                                                              >> $Cfile
- if ( $compiler == gfort ) then
+ if ( $compiler_ext == gfort ) then
    set ICL_CONST = '.'
    set ICL_MECH = '.'
  endif
@@ -229,12 +236,6 @@
     if ( ! -e "$Bld/$MODEL" ) then
        echo "   *** failure in $Blder, $Bld/$MODEL not created ***"
        exit 1
-    endif
-
-    #> If $BIN_DIR is set, move compiled binaries there
-    if ( $?BIN_DIR ) then
-       echo "Moving $MODEL to $BIN_DIR"
-       mv $Bld/$MODEL $BIN_DIR
     endif
  endif
 

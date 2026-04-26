@@ -81,6 +81,10 @@ jobs:
         run: |
           echo "REMOTE_ID=${{ env.REGISTRY }}/${{ env.IMAGE }}@${{ steps.build.outputs.digest }}" >> $GITHUB_OUTPUT
 
+      - name: Run tests
+        run: |
+          docker run --rm -v ./tests:/opt/tests ${{ steps.remote-image-id.outputs.REMOTE_ID }} /opt/tests/test-all.sh
+
   # Determine additional tags to apply to the image
   image-tags:
     runs-on: ubuntu-latest
