@@ -18,3 +18,18 @@ of rst and use slightly different categories.
 -->
 
 <!-- towncrier release notes start -->
+
+## Open Methane CMAQ v1.0.0 (2026-04-26)
+
+### 🆕 Features
+
+- Initial fork of USEPA/CMAQ 5.0.2 ([#1](https://github.com/openmethane/CMAQ/pull/1))
+- Add Dockerfile to provide image with compiled libraries and CMAQ ([#1](https://github.com/openmethane/CMAQ/pull/1))
+- Downgrade vendored pario and stenex to versions compatible with CMAQ adjoint (CMAQ 4.7.1) ([#1](https://github.com/openmethane/CMAQ/pull/1))
+- Add scripts to build ioapi, pario, stenex and bldmake ([#1](https://github.com/openmethane/CMAQ/pull/1))
+- Add CH4only chemical mechanism and bcon/icon profile data ([#3](https://github.com/openmethane/CMAQ/pull/3))
+
+### 🎉 Improvements
+
+- Add GitHub issue and PR templates and GitHub Actions build workflow ([#2](https://github.com/openmethane/CMAQ/pull/2))
+- Add changelog and release process based on uv and towncrier ([#4](https://github.com/openmethane/CMAQ/pull/4))
