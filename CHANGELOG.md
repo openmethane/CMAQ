@@ -19,6 +19,13 @@ of rst and use slightly different categories.
 
 <!-- towncrier release notes start -->
 
+## Open Methane CMAQ v1.0.1 (2026-08-12)
+
+### 🐛 Bug Fixes
+
+- Remove OS version number from build paths to prevent builds failing on different kernel versions ([#6](https://github.com/openmethane/CMAQ/pull/6))
+
+
 ## Open Methane CMAQ v1.0.0 (2026-04-26)
 
 ### 🆕 Features
