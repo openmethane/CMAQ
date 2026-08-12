@@ -29,7 +29,7 @@ setenv M3DATA  ${M3HOME}/data
 setenv COMPILER gcc
 
 setenv system "`/bin/uname -m`"
-setenv bld_os "`/bin/uname -s``/bin/uname -r | cut -d. -f1`"
+setenv bld_os "`/bin/uname -s`"
 setenv lib_basedir $M3HOME/lib
 setenv extra_lib
 

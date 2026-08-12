@@ -42,7 +42,7 @@ cp "${LIB_IOAPI_DIR}"/Makeinclude.* ioapi/
 
 # Set the binary architecture in $BIN, this will be used by the ioapi Makefile
 ARCH=$(uname -m)
-BLD_OS=$(/bin/uname -s)$(/bin/uname -r | cut -d. -f1)
+BLD_OS=$(/bin/uname -s)
 compiler_ext=gfort
 export BIN=${BLD_OS}_${ARCH}${compiler_ext}
 mkdir -p $BIN
