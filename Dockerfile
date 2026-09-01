@@ -96,7 +96,6 @@ rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 EOT
 
 ENV CMAQ_VERSION="5.0.2"
-ENV OPENMETHANE_CMAQ_VERSION="1.0.0"
 
 ENV M3HOME=/opt/cmaq
 ENV M3LIB=/opt/lib
@@ -105,6 +104,13 @@ ENV BIN_DIR=/opt/cmaq/bin
 COPY --from=builder /opt/scripts/config.cmaq /opt/scripts/config.cmaq
 COPY --from=builder /opt/cmaq /opt/cmaq
 COPY --from=builder /opt/lib /opt/lib
+
+# OPENMETHANE_CMAQ_VERSION will be overridden in release builds with semver vX.Y.Z
+ARG OPENMETHANE_CMAQ_VERSION=development
+# Make the $OPENMETHANE_CMAQ_VERSION available as an env var inside the container
+ENV OPENMETHANE_CMAQ_VERSION=$OPENMETHANE_CMAQ_VERSION
+
+LABEL org.opencontainers.image.version="${OPENMETHANE_CMAQ_VERSION}"
 
 WORKDIR /opt/cmaq
 
