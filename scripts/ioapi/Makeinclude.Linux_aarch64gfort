@@ -21,12 +21,17 @@ LINK = $(CC)
 MODI = -I
 E132 = -ffixed-line-length-132
 
-MFLAGS    = -ffast-math -funroll-loops -march=native -mtune=native -fallow-argument-mismatch #  -Wall -Wsurprising
+# Optimisation flags understood by both gcc and gfortran.
+MFLAGS    = -ffast-math -funroll-loops -march=native -mtune=native #  -Wall -Wsurprising
+
+# gfortran-only flags. Passing these to the C compiler produces
+# "valid for Fortran but not for C" warnings, so keep them out of COPTFLAGS.
+FMFLAGS   = -fallow-argument-mismatch
 
 OMPFLAGS  = -fopenmp
 OMPLIBS   = -fopenmp
 COPTFLAGS = -g -O3 ${MFLAGS}
-FOPTFLAGS = -g -O3 ${MFLAGS}
+FOPTFLAGS = -g -O3 ${MFLAGS} ${FMFLAGS}
 FPPFLAGS  = -DF90=1
 FSFLAGS   = -fno-automatic
 ARCHFLAGS = \

@@ -19,12 +19,17 @@ LINK = $(CC)
 
 MODI = -J       ## Module-include-directory command
 
-MFLAGS    = -ffast-math -funroll-loops -m64 -fallow-argument-mismatch -march=core-avx2 # -mtune=native #  -Wall -Wsurprising
+# Optimisation flags understood by both gcc and gfortran.
+MFLAGS    = -ffast-math -funroll-loops -m64 -march=core-avx2 # -mtune=native #  -Wall -Wsurprising
+
+# gfortran-only flags. Passing these to the C compiler produces
+# "valid for Fortran but not for C" warnings, so keep them out of COPTFLAGS.
+FMFLAGS   = -fbacktrace -fallow-argument-mismatch
 
 OMPFLAGS  = # -fopenmp
 OMPLIBS   = # -fopenmp
-COPTFLAGS = -g -O2 -fbacktrace ${MFLAGS}
-FOPTFLAGS = -g -O2 -fbacktrace ${MFLAGS}
+COPTFLAGS = -g -O2 ${MFLAGS}
+FOPTFLAGS = -g -O2 ${MFLAGS} ${FMFLAGS}
 FPPFLAGS  = -DF90=1
 FSFLAGS   = -fno-automatic
 ARCHFLAGS = \
