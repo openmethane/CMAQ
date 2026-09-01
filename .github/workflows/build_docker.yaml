@@ -48,6 +48,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Extract version from pyproject.toml
+        id: version
+        run: |
+          PACKAGE_VERSION=$(grep -oP '^version = "\K(.+)(?=")' pyproject.toml)
+          echo "version=v$PACKAGE_VERSION" >> $GITHUB_OUTPUT
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
@@ -72,6 +77,8 @@ jobs:
           platforms: ${{ matrix.platform }}
           labels: ${{ steps.meta.outputs.labels }}
           tags: ${{ steps.meta.outputs.tags }}
+          build-args: |
+            OPENMETHANE_CMAQ_VERSION=${{ steps.version.outputs.version }}
           push: true
           pull: false
           cache-from: type=gha
@@ -80,6 +87,19 @@ jobs:
         id: remote-image-id
         run: |
           echo "REMOTE_ID=${{ env.REGISTRY }}/${{ env.IMAGE }}@${{ steps.build.outputs.digest }}" >> $GITHUB_OUTPUT
+
+      - name: Check image version matches the release tag
+        if: startsWith(github.event.ref, 'refs/tags/v')
+        run: |
+          TAG_REF="${{ github.event.ref }}"
+          TAG_VERSION=${TAG_REF#"refs/tags/"}
+          # The entrypoint is bash, so override it to read the env var directly
+          IMAGE_VERSION=$(docker run --rm --entrypoint printenv \
+            ${{ steps.remote-image-id.outputs.REMOTE_ID }} OPENMETHANE_CMAQ_VERSION)
+          if [ "$IMAGE_VERSION" != "$TAG_VERSION" ]; then
+            echo "OPENMETHANE_CMAQ_VERSION is $IMAGE_VERSION; expected version is $TAG_VERSION"
+            exit 1
+          fi
 
       - name: Run tests
         run: |
