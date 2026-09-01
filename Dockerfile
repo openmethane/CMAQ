@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim AS builder
+FROM debian:trixie-slim AS builder
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -75,7 +75,7 @@ cd /opt/scripts/mcip
 EOT
 
 # Final image without extra packages for the runtime environment
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 LABEL org.opencontainers.image.title="CMAQ"
 LABEL org.opencontainers.image.description="Community Multiscale Air Quality Model"

@@ -26,9 +26,21 @@ MFLAGS    = -ffast-math -funroll-loops -m64 -march=core-avx2 # -mtune=native #  
 # "valid for Fortran but not for C" warnings, so keep them out of COPTFLAGS.
 FMFLAGS   = -fbacktrace -fallow-argument-mismatch
 
+# I/O API 3.1 is pre-C99 code. GCC 14 (Debian trixie) promotes these
+# diagnostics from warnings to errors by default, which the upstream sources
+# do not survive. Downgrade them back to warnings rather than patching the
+# vendored tarball.
+CLEGACY   = -std=gnu17 \
+ -Wno-error=implicit-function-declaration \
+ -Wno-error=implicit-int \
+ -Wno-error=int-conversion \
+ -Wno-error=incompatible-pointer-types \
+ -Wno-error=return-mismatch \
+ -Wno-error=declaration-missing-parameter-type
+
 OMPFLAGS  = # -fopenmp
 OMPLIBS   = # -fopenmp
-COPTFLAGS = -g -O2 ${MFLAGS}
+COPTFLAGS = -g -O2 ${MFLAGS} ${CLEGACY}
 FOPTFLAGS = -g -O2 ${MFLAGS} ${FMFLAGS}
 FPPFLAGS  = -DF90=1
 FSFLAGS   = -fno-automatic
