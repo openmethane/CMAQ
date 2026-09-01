@@ -19,6 +19,18 @@ of rst and use slightly different categories.
 
 <!-- towncrier release notes start -->
 
+## Open Methane CMAQ v1.0.2 (2026-09-01)
+
+### 🎉 Improvements
+
+- Update the base image from `debian:bookworm-slim` to `debian:trixie-slim`. Trixie ships GCC 14, which promotes several legacy C diagnostics (notably implicit function declarations) from warnings to errors, so the I/O API build now downgrades them explicitly rather than patching the vendored I/O API 3.1 sources. ([#7](https://github.com/openmethane/CMAQ/pull/7))
+- Populate `OPENMETHANE_CMAQ_VERSION` from a build `ARG` supplied by CI from `pyproject.toml`, instead of a hardcoded value that was never bumped. Local builds default to `development`, and release builds are checked against the git tag. ([#7](https://github.com/openmethane/CMAQ/pull/7))
+
+### 🐛 Bug Fixes
+
+- Stop passing gfortran-only flags (`-fbacktrace`, `-fallow-argument-mismatch`) to the C compiler when building I/O API, which produced a "valid for Fortran but not for C" warning for every C source file. ([#7](https://github.com/openmethane/CMAQ/pull/7))
+
+
 ## Open Methane CMAQ v1.0.1 (2026-08-12)
 
 ### 🐛 Bug Fixes
