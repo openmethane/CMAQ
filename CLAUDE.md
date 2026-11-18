@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Open Methane's fork of US EPA CMAQ 5.0.2 (Fortran/C, csh build scripts). The main science change is the `CH4only` chemical mechanism (`models/CCTM/MECHS/CH4only`) plus matching profiles in `models/BCON/prof_data/CH4only` and `models/ICON/prof_data/CH4only`. Other fork changes are bug fixes, WRFv4 support, and build changes so everything compiles and runs in Docker.
+Open Methane's fork of US EPA CMAQ 5.0.2 (Fortran/C, csh build scripts). The main science change is the `CH4only` chemical mechanism (`models/CCTM/MECHS/CH4only`) plus matching profiles in `models/BCON/prof_data/CH4only` and `models/ICON/prof_data/CH4only`. Other fork changes are bug fixes, WRFv4 support, and build changes so everything compiles and runs in Docker. The resulting `openmethane/cmaq` image is the base that CMAQ-Adjoint builds on, so it depends on the libraries, `config.cmaq` and paths under `/opt/cmaq` and `/opt/lib`. See `README.md` and `docs/development.md`.
 
 Most of `models/` and `tools/` is untouched upstream EPA code. Fork-specific work lives mainly in `Dockerfile`, `scripts/` (build/config scripts), `tests/`, and the `CH4only` mechanism/profile directories.
 
@@ -47,4 +47,45 @@ The image is multi-stage: a builder stage with dev packages, then a slim runtime
 - CI (`build_docker.yaml`) passes `OPENMETHANE_CMAQ_VERSION=v<pyproject version>` as a build arg; local builds get `development`. On tag builds, CI fails if the image's version doesn't match the tag.
 - Images are pushed to `ghcr.io/openmethane/cmaq`. CI runs `tests/test-all.sh` against the built image.
 - A PR that changes what gets released (the image, its build or its outputs) needs a towncrier fragment in `changelog/` named `<PR number>.<type>.md`, where type is one of `breaking`, `deprecation`, `feature`, `improvement`, `fix`, `docs`, `trivial`. Write it for users, in the past tense, as a single paragraph. Never edit `CHANGELOG.md` directly for new entries. Preview with `uvx towncrier build --draft`. PRs that don't change the release, such as agent instructions, contributor docs or PR templates, get no fragment and leave the template's changelog checkbox unticked.
-- PR descriptions follow `.github/pull_request_template.md` (Description / Checklist / Notes).
+- PR descriptions follow `.github/pull_request_template.md`. The first line says whether the PR needs human review (`**Review:** needed — <reason>` or `**Review:** not needed — <reason>; merging <when> unless someone objects`). Decide using "Code review" in `docs/development.md`: anything that can change science outputs (running source, the `CH4only` mechanism or profiles, compilers, flags, library versions, base image) needs review.
+
+## Before opening a pull request
+
+For any change that isn't mechanical (see "Code review" in
+`docs/development.md`), review it from a fresh context before opening the pull
+request, and again after reworking it substantially. Skip this for formatter
+runs, dependency bumps and CI-only changes, or if the operator asks you to.
+
+Launch the `reviewer` subagent (`.claude/agents/reviewer.md`). Give it:
+
+- the goal of the change and the diff range (e.g. `main...HEAD`)
+- the numbers of any issues the change addresses
+- any constraints the operator set during the task, such as an approach to use
+  or avoid, or something to leave unchanged
+
+Don't give it your reasoning or your view of whether the change is correct,
+because it will tend to confirm what it's told.
+
+Independent reviews of the same change find different problems. When a change
+both can alter model outputs or break the CMAQ-Adjoint build, and touches the
+build (compilers, flags, base image, libraries), the mechanism, or several
+components, offer the operator a second review, run in parallel with the same
+brief. Each review costs tens of thousands of tokens, so run the second only
+if the operator agrees. Merge the two reports, counting a finding both raised
+once, before dealing with them.
+
+Deal with each item it reports:
+
+- **Wrong, with a clear fix:** fix it, if the fix stays within the scope of the
+  task and doesn't go against the operator's instructions or the project's
+  guidance.
+- **Needs the operator's decision:** ask the operator, with the options and
+  your recommendation. This includes items with an obvious fix that would
+  change science outputs or methodology, widen the change beyond what was
+  asked, or make the pull request need human review when it otherwise
+  wouldn't.
+- **Not a problem:** dismiss it, but list it in one line to the operator with
+  your reason, because you're judging criticism of your own work.
+
+This review is part of preparing the change. Don't mention it or its findings
+in the pull request description or comments.
