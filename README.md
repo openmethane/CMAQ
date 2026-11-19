@@ -12,6 +12,11 @@ Other changes from the official CMAQ v5.0.2 release include:
  - support for newer file formats, ie WRFv4
  - updates to build scripts to enable building and running in docker
 
+## Development
+
+See [docs/development.md](docs/development.md), which includes how to decide
+whether a pull request needs review.
+
 ## License
 
 US EPA did not include a definitive LICENSE in the 5.0.2 release of CMAQ.
