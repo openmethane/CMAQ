@@ -29,7 +29,9 @@ dependencies name trixie packages.
 
 ### Installing
 
-Pin a package by URL and checksum, for example in a Dockerfile:
+Pin a package by URL and checksum, for example in a Dockerfile. In the file
+name of a pre-release, GitHub shows the `~` of the version as `.`, so
+`1.2.0~rc1` is `openmethane-cmaq_1.2.0.rc1_amd64.deb`.
 
 ```dockerfile
 FROM scratch AS cmaq-deb

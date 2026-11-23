@@ -65,6 +65,11 @@ jobs:
       - name: Create pre-release
         run: |
           cd dist
+          # GitHub turns ~ in asset names into ., so name the files that way
+          # before checksumming, and SHA256SUMS lists the names of the assets
+          for deb in *.deb; do
+            [ "$deb" = "${deb//\~/.}" ] || mv "$deb" "${deb//\~/.}"
+          done
           sha256sum *.deb > SHA256SUMS
           gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
             --prerelease --latest=false \
