@@ -123,7 +123,7 @@ the build put them, with nothing moved, renamed or rewritten.
 - Only gfortran and MPICH have been tried.
 - Only `amd64` is built in CI. `scripts/ioapi/Makeinclude.Linux_aarch64gfort`
   exists but nothing checks it.
-- The native build job runs on Ubuntu, with its own gfortran version, rather
-  than on Debian 13. The packages are only tested on Debian 13.
+- The native build job runs on Ubuntu 26.04 (gfortran 15), rather than on
+  Debian 13 (gfortran 14). The packages are only tested on Debian 13.
 - The build scripts write into the repository (`scripts/build/BLD`, and the
   ICON and BCON build directories under `$BIN_DIR`).
