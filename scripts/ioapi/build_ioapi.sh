@@ -23,12 +23,15 @@ M3LIB="${M3LIB:-/opt/lib}"
 IOAPI_VERSION="3.1"
 IOAPI_DIR="${IOAPI_DIR:-$M3LIB/ioapi_$IOAPI_VERSION}"
 IOAPI_TAR="ioapi-${IOAPI_VERSION}.tar.gz"
+# Recorded checksum: the build fails rather than changes if the upstream file does
+IOAPI_SHA256="d0a3480c80fcf4977133d36e55845594e58ce479661866e24bebc17a2c02c7e6"
 
 # path to this script and its parent folder
 LIB_IOAPI_DIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
 # fetch ioapi source and extract it
 wget -nv https://www.cmascenter.org/ioapi/download/ioapi-${IOAPI_VERSION}.tar.gz  -O ${IOAPI_TAR}
+echo "${IOAPI_SHA256}  ${IOAPI_TAR}" | sha256sum --check -
 mkdir -p "${IOAPI_DIR}"
 tar -xzvf ${IOAPI_TAR} -C "${IOAPI_DIR}"
 rm ${IOAPI_TAR}

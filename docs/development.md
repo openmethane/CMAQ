@@ -26,8 +26,9 @@ know about this, or have a say in it? If so, it needs review.
 ### What counts as science outputs here
 
 This repository builds the CMAQ libraries and tools (I/O API, PARIO, STENEX,
-MCIP, ICON, BCON) and the `CH4only` mechanism into the `openmethane/cmaq`
-Docker image, which CMAQ-Adjoint builds on. Its science outputs are what
+MCIP, ICON, BCON) and the `CH4only` mechanism into the `openmethane-cmaq` and
+`openmethane-cmaq-dev` Debian packages, which openmethane and CMAQ-Adjoint
+install. Its science outputs are what
 those tools produce, and what the model built on them produces. A change
 affects them if it changes:
 
@@ -47,7 +48,7 @@ affects them if it changes:
   the rest of the team knowing about it and agreeing with it. This doesn't
   include fixes to typos, grammar or formatting, which are mechanical changes.
 - **Changes that make a build or production run fail, or stop failing, where
-  it didn't before**, including builds of CMAQ-Adjoint on top of this image.
+  it didn't before**, including builds of CMAQ-Adjoint against `openmethane-cmaq-dev`.
   Make sure whoever looks after production runs knows about these.
 
 ### Review not needed

@@ -1,4 +1,4 @@
-dest = $(M3LIB)/stenex/se_gcc8.3.0
+dest = $(M3LIB)/stenex/$(STENEX_SUBDIR)
 
 fc = mpif90
 fstd = -O2 -ffixed-line-length-132 -fbacktrace -fno-automatic -fallow-argument-mismatch -c

@@ -1,0 +1,41 @@
+name: Native build
+
+# Follows docs/building.md literally on a GitHub-hosted runner, with no
+# container, building through to MCIP, ICON and BCON. This keeps the document true.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'docs/building.md'
+      - 'scripts/**'
+      - 'models/**'
+      - '.github/workflows/native-build.yaml'
+  push:
+    branches:
+      - 'main'
+  schedule:
+    - cron: '0 3 * * 1'
+
+jobs:
+  native-build:
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # The environment the document describes: an install prefix we can write
+      # to, and the packages it lists. This runs the commands in docs/building.md
+      # marked `<!-- ci:run -->`.
+      - name: Follow docs/building.md
+        run: |
+          awk '/<!-- ci:run -->/{getline; if ($0 ~ /^```/) {inblock=1; next}} inblock && /^```/{inblock=0} inblock' docs/building.md > "$RUNNER_TEMP/building.sh"
+          cat "$RUNNER_TEMP/building.sh"
+          bash -euxo pipefail "$RUNNER_TEMP/building.sh"
+
+      - name: Run tests
+        run: |
+          export M3HOME=/opt/cmaq
+          tests/test-all.sh

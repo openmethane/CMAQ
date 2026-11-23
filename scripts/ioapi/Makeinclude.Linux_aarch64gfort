@@ -36,9 +36,12 @@ CLEGACY   = -std=gnu17 \
  -Wno-error=implicit-function-declaration \
  -Wno-error=implicit-int \
  -Wno-error=int-conversion \
- -Wno-error=incompatible-pointer-types \
- -Wno-error=return-mismatch \
- -Wno-error=declaration-missing-parameter-type
+ -Wno-error=incompatible-pointer-types
+
+# These two diagnostics only exist in GCC 14 and later, and older compilers
+# reject the option, so add them only if the compiler accepts them.
+CLEGACY  += $(foreach w,return-mismatch declaration-missing-parameter-type,\
+ $(shell echo 'int x;' | $(CC) -Wno-error=$(w) -x c -c -o /dev/null - 2>/dev/null && echo -Wno-error=$(w)))
 
 OMPFLAGS  = -fopenmp
 OMPLIBS   = -fopenmp
