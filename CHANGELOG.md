@@ -19,6 +19,17 @@ of rst and use slightly different categories.
 
 <!-- towncrier release notes start -->
 
+## Open Methane CMAQ v1.1.0 (2026-11-23)
+
+### ⚠️ Breaking Changes
+
+- Stopped publishing the `ghcr.io/openmethane/cmaq` image; the last image is `1.0.2`. CMAQ is now published as two Debian 13 (trixie) packages attached to each GitHub release, `openmethane-cmaq` (MCIP, ICON and BCON) and `openmethane-cmaq-dev` (the I/O API, PARIO, STENEX, `bldmake` and `config.cmaq` that CMAQ-Adjoint builds against), together with a `SHA256SUMS` file, so install the packages from the release instead of using the image as a base. ([#11](https://github.com/openmethane/CMAQ/pull/11))
+
+### 🐛 Bug Fixes
+
+- Fixed the `SHA256SUMS` file attached to pre-releases, which listed file names that did not match the attached packages because GitHub shows the `~` in a pre-release version as `.`. ([#12](https://github.com/openmethane/CMAQ/pull/12))
+
+
 ## Open Methane CMAQ v1.0.2 (2026-09-01)
 
 ### 🎉 Improvements
