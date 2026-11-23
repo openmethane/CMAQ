@@ -111,6 +111,11 @@ jobs:
           for deb in dist/*.deb; do
             [ "$(dpkg-deb -f "$deb" Version)" = "$EXPECTED" ] || { echo "$deb does not have version $EXPECTED"; exit 1; }
           done
+          # GitHub turns ~ in asset names into ., so name the files that way
+          # before checksumming, and SHA256SUMS lists the names of the assets
+          for deb in dist/*.deb; do
+            [ "$deb" = "${deb//\~/.}" ] || mv "$deb" "${deb//\~/.}"
+          done
           (cd dist && sha256sum *.deb > SHA256SUMS && cat SHA256SUMS)
 
       - name: Create release
