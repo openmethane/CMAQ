@@ -62,6 +62,10 @@ endif
 #> set executable id
 setenv EXEC_ID ${bld_os}_${system}${compiler_ext}
 
+#> STENEX is installed in $M3LIB/stenex/$STENEX_SUBDIR. The name predates
+#> the move to gfortran 14 and is kept so that existing builds still find it.
+setenv STENEX_SUBDIR se_gcc8.3.0
+
 #> Set location of libraries/include files
 setenv MPI_INC "." # not needed when libmpich-dev installed via apt
 setenv IOAPI_LIB "-L${IOAPI_DIR}/${EXEC_ID} -lioapi"
@@ -69,8 +73,8 @@ setenv IOAPI_MOD "${IOAPI_DIR}/${EXEC_ID}"
 setenv NETCDF_LIB "`nf-config --flibs`"
 setenv NETCDF_MOD "`nf-config --fflags`"
 setenv PARIO_LIB "${M3LIB}/pario -lpario"
-setenv STENEX_LIB "${M3LIB}/stenex/se_gcc8.3.0"
-setenv STENEX_MOD "${M3LIB}/stenex/se_gcc8.3.0"
+setenv STENEX_LIB "${M3LIB}/stenex/${STENEX_SUBDIR}"
+setenv STENEX_MOD "${M3LIB}/stenex/${STENEX_SUBDIR}"
 
 #> If $BIN_DIR is set, compiled binaries will be placed there
 if ( $?BIN_DIR ) then

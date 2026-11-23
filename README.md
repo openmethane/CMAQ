@@ -12,6 +12,70 @@ Other changes from the official CMAQ v5.0.2 release include:
  - support for newer file formats, ie WRFv4
  - updates to build scripts to enable building and running in docker
 
+## Packages
+
+CMAQ is published as two Debian packages, attached to each
+[GitHub release](https://github.com/openmethane/CMAQ/releases) together with a
+`SHA256SUMS` file. They are built for Debian 13 (trixie), and their
+dependencies name trixie packages.
+
+| Package | Contents |
+| --- | --- |
+| `openmethane-cmaq` | `/opt/cmaq/bin/mcip.exe`, and `/opt/cmaq/bin/{ICON,BCON}_CH4only/` with the executable, the `GC`, `AE`, `NR` and `Species_Table_TR_0` namelists and the profile data file. Depends on the libraries they link, and `csh`. |
+| `openmethane-cmaq-dev` | The build environment for CMAQ-Adjoint: the I/O API, PARIO and STENEX libraries and module files under `/opt/lib`, `bldmake`, and `config.cmaq` at `/opt/scripts/config.cmaq`. Depends on the toolchain they were built with, including `gfortran-14`. A package can't set environment variables, so a consumer sets `M3HOME`, `M3LIB` and `IOAPI_DIR` itself (see [docs/building.md](docs/building.md)). |
+
+**Images are no longer published.** The last image is
+`ghcr.io/openmethane/cmaq:1.0.2`, and it and earlier ones stay available.
+
+### Installing
+
+Pin a package by URL and checksum, for example in a Dockerfile:
+
+```dockerfile
+FROM scratch AS cmaq-deb
+ADD --checksum=sha256:<sum> https://github.com/openmethane/CMAQ/releases/download/v<ver>/openmethane-cmaq_<ver>_amd64.deb /
+
+FROM debian:trixie-slim
+RUN --mount=type=bind,from=cmaq-deb,target=/debs \
+    apt-get update && apt-get install -y /debs/*.deb
+```
+
+### Testing an unmerged change downstream
+
+Define each package as a named stage, as above, and install it from a bind
+mount on that stage. BuildKit lets a build replace a named stage with
+`--build-context <stage>=<source>`, without editing the Dockerfile. Each stage
+installs `/debs/*.deb`, so a directory holding both packages works for either.
+
+Locally, from the pull request's CI artifact `debs`:
+
+```shell
+# <branch> is the CMAQ pull request's branch
+RUN_ID=$(gh run list -R openmethane/CMAQ --branch <branch> --workflow build.yaml \
+  --status success --limit 1 --json databaseId -q '.[0].databaseId')
+gh run download "$RUN_ID" -R openmethane/CMAQ -n debs -D debs/cmaq
+docker build --build-context cmaq-deb=./debs/cmaq -t openmethane:dev .
+```
+
+In downstream CI, or in AWS, the package needs a public URL. Run the
+`Publish dev build` workflow on the pull request's branch:
+
+```shell
+gh workflow run dev-build.yaml -R openmethane/CMAQ --ref <branch>
+```
+
+It publishes a pre-release tagged `dev-pr<PR>-<sha7>` with the packages, and
+writes the `ADD --checksum=…` lines to the job summary. Pin those in the
+downstream pull request temporarily, and move the pin to a real release before
+it merges. The pre-release is deleted when the CMAQ pull request closes.
+
+### Building
+
+`docker build --target debs --output type=local,dest=dist .` builds both
+packages, and `--target test` installs `openmethane-cmaq` in a clean
+`debian:trixie-slim` and runs the tests. See [docs/building.md](docs/building.md)
+for the steps, and for building without Docker.
+
 ## Development
 
 See [docs/development.md](docs/development.md), which includes how to decide

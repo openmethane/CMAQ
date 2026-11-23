@@ -1,7 +1,8 @@
 .phony: build
-build: Dockerfile ## build an x86_64 version of the docker container
-	docker build . -t cmaq
+build: Dockerfile ## build both Debian packages into dist/
+	docker build --target debs --output type=local,dest=dist \
+		--build-arg DEB_VERSION=$$(scripts/debian-version.sh) .
 
 .phony: test
-test: build
-	docker run -it --rm -v ./tests:/opt/tests cmaq /opt/tests/test-all.sh
+test: ## install openmethane-cmaq in a clean image and run the tests
+	docker build --target test --build-arg DEB_VERSION=$$(scripts/debian-version.sh) .
